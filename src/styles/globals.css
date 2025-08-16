@@ -1,15 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --soft-white: #F2F4F7;
+  --soft-lilac: #B1B7C9;
+  --soft-sand: #E8E3DC;
+  --power-blue: #2F88E0;
+  --navy-blue: #2C3E50;
+  --soft-blue: #D3E0EA;
+  --disabled-grey: #E9E9E9;
+  --error-red: #C00000;
+  --disabled-blue: #2F88E025;
+  --disabled-navy: #2C3E5015;
+  --softest-blue: #D3E0EA25;
+  --softest-lilac: #B1B7C930;
+  --power-blue-disabled: #CAD7E3;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-soft-white: var(--soft-white);
+  --color-soft-lilac: var(--soft-lilac);
+  --color-soft-sand: var(--soft-sand);
+  --color-power-blue: var(--power-blue);
+  --color-navy-blue: var(--navy-blue);
+  --color-soft-blue: var(--soft-blue);
+  --color-disabled-grey: var(--disabled-grey);
+  --color-error-red: var(--error-red);
+  --color-disabled-blue: var(--disabled-blue);
+  --color-disabled-navy: var(--disabled-navy);
+  --color-softest-blue: var(--softest-blue);
+  --color-softest-lilac: var(--softest-lilac);
+  --color-power-blue-disabled: var(--power-blue-disabled);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +41,6 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--soft-white);
   font-family: Arial, Helvetica, sans-serif;
 }
