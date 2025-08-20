@@ -33,13 +33,55 @@
   --color-power-blue-disabled: var(--power-blue-disabled);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--soft-white);
+}
+
+.text-f1 {
+  font-size: 3rem; /* 48px */
+  letter-spacing: -4%;
+  line-height: 4.375rem; /* 70px */
+}
+
+.text-f2 {
+  font-size: 2rem; /* 32px */
+  letter-spacing: -2%;
+  line-height: 3.5rem; /* 56px */
+}
+
+.text-f3 {
+  font-size: 1.5rem; /* 24px */
+  letter-spacing: -1%;
+  line-height: 2.188rem; /* 35px */
+}
+
+.text-f4 {
+  font-size: 1.25rem; /* 20px */
+  letter-spacing: -1%;
+  line-height: 1.813rem; /* 29px */
+}
+
+.text-f5 {
+  font-size: 1rem; /* 16px */
+  letter-spacing: -1%;
+  line-height: 1.5rem; /* 23px */
+}
+
+.text-f6 {
+  font-size: 0.875rem; /* 14px */
+  letter-spacing: -1%;
+  line-height: 1.5rem; /* 24px */
+}
+
+.text-f7 {
+  font-size: 0.75rem; /* 12px */
+  letter-spacing: -1%;
+  line-height: 1.5rem; /* 24px */
 }
