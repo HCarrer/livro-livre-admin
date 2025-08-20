@@ -14,6 +14,16 @@ const COLORS = [
 "bg-power-blue-disabled",
 ]
 
+const FONTS = [
+  "text-f1",
+  "text-f2",
+  "text-f3",
+  "text-f4",
+  "text-f5",
+  "text-f6",
+  "text-f7",
+]
+
 const Home = () => {
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen">
@@ -24,6 +34,15 @@ const Home = () => {
             {color.replace("bg", "").replaceAll("-", " ")}
           </div>
         ))}
+      </div>
+      <div>
+        <div className="flex flex-col gap-2">
+          {FONTS.map((font, i) => (
+            <div key={i} className={font}>
+              {font}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

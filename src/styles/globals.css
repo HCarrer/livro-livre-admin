@@ -46,42 +46,42 @@ body {
 
 .text-f1 {
   font-size: 3rem; /* 48px */
-  letter-spacing: -4%;
-  line-height: 4.375rem; /* 70px */
+  letter-spacing: -0.12rem;
+  line-height: 3.25rem; /* 52px */
 }
 
 .text-f2 {
   font-size: 2rem; /* 32px */
-  letter-spacing: -2%;
-  line-height: 3.5rem; /* 56px */
+  letter-spacing: -0.04rem;
+  line-height: 2.25rem; /* 36px */
 }
 
 .text-f3 {
   font-size: 1.5rem; /* 24px */
-  letter-spacing: -1%;
-  line-height: 2.188rem; /* 35px */
+  letter-spacing: -0.01rem;
+  line-height: 1.75rem; /* 28px */
 }
 
 .text-f4 {
   font-size: 1.25rem; /* 20px */
-  letter-spacing: -1%;
-  line-height: 1.813rem; /* 29px */
+  letter-spacing: -0.01rem;
+  line-height: 1.5rem; /* 24px */
 }
 
 .text-f5 {
   font-size: 1rem; /* 16px */
-  letter-spacing: -1%;
-  line-height: 1.5rem; /* 23px */
+  letter-spacing: -0.01rem;
+  line-height: 1.25rem; /* 20px */
 }
 
 .text-f6 {
   font-size: 0.875rem; /* 14px */
-  letter-spacing: -1%;
-  line-height: 1.5rem; /* 24px */
+  letter-spacing: -0.01rem;
+  line-height: 1.125rem; /* 18px */
 }
 
 .text-f7 {
   font-size: 0.75rem; /* 12px */
-  letter-spacing: -1%;
-  line-height: 1.5rem; /* 24px */
+  letter-spacing: -0.01rem;
+  line-height: 1rem; /* 16px */
 }
