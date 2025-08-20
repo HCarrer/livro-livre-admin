@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --soft-white: #F2F4F7;
+  --soft-lilac: #B1B7C9;
+  --soft-sand: #E8E3DC;
+  --power-blue: #2F88E0;
+  --navy-blue: #2C3E50;
+  --soft-blue: #D3E0EA;
+  --disabled-grey: #E9E9E9;
+  --error-red: #C00000;
+  --disabled-blue: #2F88E025;
+  --disabled-navy: #2C3E5015;
+  --softest-blue: #D3E0EA25;
+  --softest-lilac: #B1B7C930;
+  --power-blue-disabled: #CAD7E3;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-soft-white: var(--soft-white);
+  --color-soft-lilac: var(--soft-lilac);
+  --color-soft-sand: var(--soft-sand);
+  --color-power-blue: var(--power-blue);
+  --color-navy-blue: var(--navy-blue);
+  --color-soft-blue: var(--soft-blue);
+  --color-disabled-grey: var(--disabled-grey);
+  --color-error-red: var(--error-red);
+  --color-disabled-blue: var(--disabled-blue);
+  --color-disabled-navy: var(--disabled-navy);
+  --color-softest-blue: var(--softest-blue);
+  --color-softest-lilac: var(--softest-lilac);
+  --color-power-blue-disabled: var(--power-blue-disabled);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--soft-white);
+}
+
+.text-f1 {
+  font-size: 3rem; /* 48px */
+  letter-spacing: -0.12rem;
+  line-height: 3.25rem; /* 52px */
+}
+
+.text-f2 {
+  font-size: 2rem; /* 32px */
+  letter-spacing: -0.04rem;
+  line-height: 2.25rem; /* 36px */
+}
+
+.text-f3 {
+  font-size: 1.5rem; /* 24px */
+  letter-spacing: -0.01rem;
+  line-height: 1.75rem; /* 28px */
+}
+
+.text-f4 {
+  font-size: 1.25rem; /* 20px */
+  letter-spacing: -0.01rem;
+  line-height: 1.5rem; /* 24px */
+}
+
+.text-f5 {
+  font-size: 1rem; /* 16px */
+  letter-spacing: -0.01rem;
+  line-height: 1.25rem; /* 20px */
+}
+
+.text-f6 {
+  font-size: 0.875rem; /* 14px */
+  letter-spacing: -0.01rem;
+  line-height: 1.125rem; /* 18px */
+}
+
+.text-f7 {
+  font-size: 0.75rem; /* 12px */
+  letter-spacing: -0.01rem;
+  line-height: 1rem; /* 16px */
 }
