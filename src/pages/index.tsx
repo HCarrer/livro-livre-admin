@@ -48,16 +48,16 @@ const Home = () => {
       </div>
       <div>
         <div className="grid grid-cols-5 gap-4">
-          <Button variant="main" label="Button" onClick={() => alert('main')}/>
-          <Button variant="secondary" label="Button" onClick={() => alert('secondary')}/>
-          <Button variant="tertiary" label="Button" onClick={() => alert('tertiary')}/>
-          <Button variant="outline" label="Button" onClick={() => alert('outline')}/>
-          <Button variant="primaryOutline" label="Button" onClick={() => alert('primaryOutline')}/>
-          <Button disabled variant="main" label="Button" onClick={() => alert('main')}/>
-          <Button disabled variant="secondary" label="Button" onClick={() => alert('secondary')}/>
-          <Button disabled variant="tertiary" label="Button" onClick={() => alert('tertiary')}/>
-          <Button disabled variant="outline" label="Button" onClick={() => alert('outline')}/>
-          <Button disabled variant="primaryOutline" label="Button" onClick={() => alert('primaryOutline')}/>
+          <Button variant="main" label="main" onClick={() => alert('main')}/>
+          <Button variant="secondary" label="secondary" onClick={() => alert('secondary')}/>
+          <Button variant="tertiary" label="tertiary" onClick={() => alert('tertiary')}/>
+          <Button variant="outline" label="outline" onClick={() => alert('outline')}/>
+          <Button variant="primaryOutline" label="primaryOutline" onClick={() => alert('primaryOutline')}/>
+          <Button disabled variant="main" label="main" onClick={() => alert('main')}/>
+          <Button disabled variant="secondary" label="secondary" onClick={() => alert('secondary')}/>
+          <Button disabled variant="tertiary" label="tertiary" onClick={() => alert('tertiary')}/>
+          <Button disabled variant="outline" label="outline" onClick={() => alert('outline')}/>
+          <Button disabled variant="primaryOutline" label="primaryOutline" onClick={() => alert('primaryOutline')}/>
         </div>
       </div>
     </div>

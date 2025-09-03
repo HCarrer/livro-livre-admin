@@ -20,9 +20,9 @@ const classNameVariants = cva(
         tertiary:
           'bg-soft-white border border-soft-lilac text-soft-lilac',
         outline:
-          'bg-white border border-navy-blue text-navy-blue',
+          'border border-navy-blue text-navy-blue',
         primaryOutline:
-          'bg-white border border-power-blue text-power-blue',
+          'border border-power-blue text-power-blue',
       },
       disabled: {
         true: 'pointer-events-none',
@@ -43,17 +43,17 @@ const classNameVariants = cva(
       {
         variant: 'tertiary',
         disabled: true,
-        class: 'bg-soft-white border border-soft-lilac text-soft-lilac'
+        class: 'bg-soft-white border border-soft-blue text-soft-blue'
       },
       {
         variant: 'outline',
         disabled: true,
-        class: 'bg-white border border-navy-blue text-navy-blue'
+        class: 'border border-disabled-navy text-disabled-navy'
       },
       {
         variant: 'primaryOutline',
         disabled: true,
-        class: 'bg-white border border-power-blue text-power-blue'
+        class: 'border border-disabled-blue text-disabled-blue'
       }
     ],
     defaultVariants: {
