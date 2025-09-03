@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     label?: string
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
     variant?: 'main' | 'secondary' | 'tertiary' | 'outline' | 'primaryOutline'
