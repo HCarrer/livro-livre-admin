@@ -3,7 +3,6 @@ import { cva } from "class-variance-authority"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     label?: string
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
     variant?: 'main' | 'secondary' | 'tertiary' | 'outline' | 'primaryOutline'
     disabled?: boolean
 }
