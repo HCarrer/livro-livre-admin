@@ -62,7 +62,7 @@ const Home = () => {
         </div>
       </div>
       <div>
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <Input label="Label" placeholder="Placeholder" />
           <Input label="With Value" placeholder="Placeholder" value="Jhon Doe"/>
           <Input label="With Error" placeholder="Placeholder" errorMessage="Mensagem de erro" value="Valor do campo" />
