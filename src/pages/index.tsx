@@ -1,4 +1,5 @@
 import Button from "@/design-system/button"
+import Input from "@/design-system/input"
 
 const COLORS = [
 "bg-soft-white",
@@ -58,6 +59,18 @@ const Home = () => {
           <Button disabled variant="tertiary" label="tertiary" onClick={() => alert('tertiary')}/>
           <Button disabled variant="outline" label="outline" onClick={() => alert('outline')}/>
           <Button disabled variant="primaryOutline" label="primaryOutline" onClick={() => alert('primaryOutline')}/>
+        </div>
+      </div>
+      <div>
+        <div className="flex flex-col gap-4">
+          <Input label="Label" placeholder="Placeholder" />
+          <Input label="With Value" placeholder="Placeholder" value="Jhon Doe"/>
+          <Input label="With Error" placeholder="Placeholder" errorMessage="Mensagem de erro" value="Valor do campo" />
+          <Input label="Disabled" placeholder="Placeholder" disabled />
+          <Input label="With search icon" placeholder="Placeholder" icon="search" />
+          <Input label="With avatar icon" placeholder="Placeholder" icon="avatar" />
+          <Input label="With closedEye icon" placeholder="Placeholder" icon="closedEye" />
+          <Input label="With openEye icon" placeholder="Placeholder" icon="openEye" />
         </div>
       </div>
     </div>
