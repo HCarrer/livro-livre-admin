@@ -2,9 +2,10 @@ import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    label?: string
+    label?: string | React.ReactNode
     variant?: 'main' | 'secondary' | 'tertiary' | 'outline' | 'primaryOutline'
     disabled?: boolean
+    className?: string
 }
 
 const classNameVariants = cva(
@@ -62,11 +63,11 @@ const classNameVariants = cva(
 )
 
 
-const Button = ({ label, onClick, variant = 'main', disabled = false, ...props }: ButtonProps) => {
+const Button = ({ label, onClick, variant = 'main', disabled = false, className, ...props }: ButtonProps) => {
   return (
     <button
       {...props}
-      className={cn(classNameVariants({ variant, disabled }))}
+      className={cn(classNameVariants({ variant, disabled }), className)}
       onClick={onClick}
       disabled={disabled}
     >

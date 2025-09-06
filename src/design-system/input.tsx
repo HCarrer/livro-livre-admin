@@ -9,6 +9,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     disabled?: boolean
     errorMessage?: string
     icon?: 'search' | 'avatar' | 'closedEye' | 'openEye',
+    className?: string
+    onIconClick?: () => void
 }
 
 const ICONS: Record<NonNullable<InputProps['icon']>, React.ReactNode> = {
@@ -19,7 +21,7 @@ const ICONS: Record<NonNullable<InputProps['icon']>, React.ReactNode> = {
 }
 
 const classNameVariants = cva(
-  'flex gap-x-3 p-4 bg-white border border-soft-lilac rounded-full text-f5 !leading-[17px] placeholder-soft-lilac text-navy-blue focus:ring-0 focus:outline-none focus:border-power-blue focus:text-navy-blue',
+  'flex gap-x-3 p-4 bg-white border border-soft-lilac rounded-full text-f5 placeholder-soft-lilac text-navy-blue focus:ring-0 focus:outline-none focus:border-power-blue focus:text-navy-blue',
   {
     variants: {
       disabled: {
@@ -54,16 +56,28 @@ const labelClassNameVariants = cva(
   }
 )
 
-const Input = ({ label, placeholder, disabled = false, errorMessage, icon, ...props }: InputProps) => {
+const iconClassNameVariants = cva(
+  'border-r border-soft-lilac text-soft-lilac pr-3',
+  {
+    variants: {
+      isClickable: {
+        true: 'cursor-pointer',
+        false: ''
+      }
+    },
+  }
+)
+
+const Input = ({ label, placeholder, disabled = false, errorMessage, icon, className, onIconClick, ...props }: InputProps) => {
     const [hasFocus, setHasFocus] = useState(false)
 
     const hasError = useMemo(() => !!errorMessage, [errorMessage])
 
     return (
-        <div className="flex flex-col w-[400px]">
+        <div className={cn('flex flex-col w-full', className)}>
             {label && <label className={cn(labelClassNameVariants({ disabled, hasError, hasFocus }))}>{label}</label>}
             <div className={cn(classNameVariants({ disabled, hasError }))}>
-                {!!icon ? <div className="border-r border-soft-lilac text-soft-lilac pr-3">{ICONS[icon]}</div> : null}
+                {!!icon ? <button className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))} onClick={onIconClick}>{ICONS[icon]}</button> : null}
                 <input
                     {...props}
                     onFocus={() => setHasFocus(true)}
