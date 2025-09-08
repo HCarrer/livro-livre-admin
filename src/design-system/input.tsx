@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
-import { Eye, EyeClosed, SearchIcon, UserRound } from "lucide-react"
+import { Eye, EyeClosed, Lock, LockOpen, SearchIcon, UserRound } from "lucide-react"
 import { useMemo, useState } from "react"
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string
     disabled?: boolean
     errorMessage?: string
-    icon?: 'search' | 'avatar' | 'closedEye' | 'openEye',
+    icon?: 'search' | 'avatar' | 'closedEye' | 'openEye' | 'locked' | 'unlocked',
     className?: string
     onIconClick?: () => void
 }
@@ -18,6 +18,8 @@ const ICONS: Record<NonNullable<InputProps['icon']>, React.ReactNode> = {
   avatar: <UserRound size={20}/>,
   closedEye: <EyeClosed size={20}/>,
   openEye: <Eye size={20}/>,
+  locked: <Lock size={20}/>,
+  unlocked: <LockOpen size={20}/>,
 }
 
 const classNameVariants = cva(
@@ -74,20 +76,20 @@ const Input = ({ label, placeholder, disabled = false, errorMessage, icon, class
     const hasError = useMemo(() => !!errorMessage, [errorMessage])
 
     return (
-        <div className={cn('flex flex-col w-full', className)}>
-            {label && <label className={cn(labelClassNameVariants({ disabled, hasError, hasFocus }))}>{label}</label>}
-            <div className={cn(classNameVariants({ disabled, hasError }))}>
-                {!!icon ? <button className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))} onClick={onIconClick}>{ICONS[icon]}</button> : null}
-                <input
-                    {...props}
-                    onFocus={() => setHasFocus(true)}
-                    onBlur={() => setHasFocus(false)}
-                    className="w-full bg-transparent border-0 focus:ring-0 focus:outline-none focus:border-0 p-0 m-0"
-                    placeholder={placeholder}
-                    disabled={disabled}
-                />
-            </div>
-            {hasError && <p className="pl-4 text-f7 mt-1 text-error-red">{errorMessage}</p>}
+        <div className="flex flex-col w-full">
+          {label && <label className={cn(labelClassNameVariants({ disabled, hasError, hasFocus }))}>{label}</label>}
+          <div className={cn(classNameVariants({ disabled, hasError }), className)}>
+              {!!icon ? <button className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))} onClick={onIconClick}>{ICONS[icon]}</button> : null}
+              <input
+                  {...props}
+                  onFocus={() => setHasFocus(true)}
+                  onBlur={() => setHasFocus(false)}
+                  className="w-full bg-transparent border-0 focus:ring-0 focus:outline-none focus:border-0 p-0 m-0"
+                  placeholder={placeholder}
+                  disabled={disabled}
+              />
+          </div>
+          {hasError && <p className="pl-4 text-f7 mt-1 text-error-red">{errorMessage}</p>}
         </div>
     )
 }
