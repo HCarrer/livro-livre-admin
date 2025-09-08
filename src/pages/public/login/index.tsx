@@ -8,6 +8,7 @@ import Background from "../../../../public/icons/background.svg"
 import Link from "next/link"
 import { RESET_PASSWORD, SIGNUP } from "@/constants/routes"
 import { useForm } from "react-hook-form"
+import { LoginFormDefaultValues, LoginFormProps } from "@/constants/forms/login"
 
 const GoogleButtonContent = () => (
 	<p className="flex gap-x-4 justify-center items-center">
@@ -24,7 +25,7 @@ const Login = () => {
 		register,
 		handleSubmit
 	} = useForm({
-		defaultValues: { username: "", password: "" },
+		defaultValues: LoginFormDefaultValues,
 		mode: 'all',
     criteriaMode: 'all'
 	})
@@ -37,9 +38,9 @@ const Login = () => {
 		setValue('password', e.target.value, { shouldValidate: true, shouldDirty: true })
 	}
 
-	const onSubmit = (data: any) => {
-		// TODO: deixar login funcional
-		console.log(data)
+	const onSubmit = (data: LoginFormProps) => {
+		// TODO: deixar login funcional e hashear senha
+		console.log({...data, password: '******'})
 	}
 
 	return (
