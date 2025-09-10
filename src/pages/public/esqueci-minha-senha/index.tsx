@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Button from "@/design-system/button"
 import Input from "@/design-system/input"
 import Image from "next/image"
@@ -21,7 +20,6 @@ const Login = () => {
 		register,
 		handleSubmit,
 		watch,
-		setError,
 		clearErrors
 	} = useForm<ForgotPasswordFormProps>({
 		defaultValues: ForgotPasswordFormDefaultValues,
@@ -39,7 +37,6 @@ const Login = () => {
 	const newPasswordConfirmationValue = watch('newPasswordConfirmation')
 
 	const handleTwoFactorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.value.length > 6) return
 		setValue('twoFactorCode', e.target.value, { shouldValidate: true, shouldDirty: true })
 	}
 
@@ -78,13 +75,8 @@ const Login = () => {
 	}, [twoFactorCodeValue])
 
 	useEffect(() => {
-		console.log(newPasswordValue, newPasswordConfirmationValue)
-		if (newPasswordValue && newPasswordConfirmationValue) {
-			if (newPasswordValue !== newPasswordConfirmationValue) {
-				console.log('setting error')
-				setError('newPasswordConfirmation', { type: 'custom', message: 'As senhas não coincidem' })
-			} else clearErrors('newPasswordConfirmation')
-		}
+		if (newPasswordValue == newPasswordConfirmationValue)
+			clearErrors('newPasswordConfirmation')
 	}, [newPasswordValue, newPasswordConfirmationValue])
 
 	const EmailStepContent = useMemo(() => (
@@ -139,7 +131,8 @@ const Login = () => {
 			/>
 			<Input
 				{...register('newPasswordConfirmation', {
-					required: 'Campo obrigatório'
+					required: 'Campo obrigatório',
+					validate: value => value === newPasswordValue || 'As senhas não coincidem'
 				})}
 				className="w-full"
 				placeholder="Confirme sua nova senha"
@@ -151,7 +144,7 @@ const Login = () => {
 			/>
 			<Button label="Alterar senha" variant="main" disabled={!isValid} type="submit" onClick={handleSubmit(onSubmit)} className="w-full"/>
 		</>
-	), [handleNewPasswordConfirmationChange, register, errors])
+	), [handleNewPasswordConfirmationChange, register, errors, newPasswordValue])
 
 	return (
 		<div className="relative w-screen h-screen px-6 py-8 flex items-center justify-center">
