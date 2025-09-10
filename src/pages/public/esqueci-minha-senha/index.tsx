@@ -8,8 +8,10 @@ import Link from "next/link"
 import { LOGIN } from "@/constants/routes"
 import { useForm } from "react-hook-form"
 import { ForgotPasswordFormDefaultValues, ForgotPasswordFormProps } from "@/constants/forms/esqueci-minha-senha"
+import { useRouter } from "next/router"
 
-const Login = () => {
+const ForgottenPassword = () => {
+	const router = useRouter()
 	const [showPassword, setShowPassword] = useState(false)
 	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
 	const [currentStep, setCurrentStep] = useState<"email" | "twoFactor" | "newPassword">("email")
@@ -51,6 +53,7 @@ const Login = () => {
 	const onSubmit = (data: ForgotPasswordFormProps) => {
 		// TODO: deixar login funcional e hashear senha
 		console.log(data)
+		router.push(LOGIN)
 	}
 
 	const advanceStep = useCallback(() => {
@@ -167,4 +170,4 @@ const Login = () => {
 	)
 }
 
-export default Login
+export default ForgottenPassword
