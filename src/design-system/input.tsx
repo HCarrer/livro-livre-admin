@@ -1,15 +1,16 @@
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
-import { Eye, EyeClosed, Lock, LockOpen, SearchIcon, UserRound } from "lucide-react"
-import { useMemo, useState } from "react"
+import { Eye, EyeClosed, Lock, LockOpen, Mail, SearchIcon, UserRound } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string
     placeholder?: string
     disabled?: boolean
     errorMessage?: string
-    icon?: 'search' | 'avatar' | 'closedEye' | 'openEye' | 'locked' | 'unlocked',
+    icon?: 'search' | 'avatar' | 'closedEye' | 'openEye' | 'locked' | 'unlocked' | 'email',
     className?: string
+    fieldName?: string
     onIconClick?: () => void
 }
 
@@ -20,6 +21,7 @@ const ICONS: Record<NonNullable<InputProps['icon']>, React.ReactNode> = {
   openEye: <Eye size={20}/>,
   locked: <Lock size={20}/>,
   unlocked: <LockOpen size={20}/>,
+  email: <Mail size={20}/>,
 }
 
 const classNameVariants = cva(
@@ -70,28 +72,41 @@ const iconClassNameVariants = cva(
   }
 )
 
-const Input = ({ label, placeholder, disabled = false, errorMessage, icon, className, onIconClick, ...props }: InputProps) => {
-    const [hasFocus, setHasFocus] = useState(false)
+const Input = ({ label, placeholder, disabled = false, errorMessage, icon, className, fieldName, onIconClick, ...props }: InputProps) => {
+  const [errorMessageState, setErrorMessageState] = useState(errorMessage)
+  const [hasFocus, setHasFocus] = useState(false)
 
-    const hasError = useMemo(() => !!errorMessage, [errorMessage])
+  const hasError = useMemo(() => !!errorMessage, [errorMessage])
 
-    return (
-        <div className="flex flex-col w-full">
-          {label && <label className={cn(labelClassNameVariants({ disabled, hasError, hasFocus }))}>{label}</label>}
-          <div className={cn(classNameVariants({ disabled, hasError }), className)}>
-              {!!icon ? <button className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))} onClick={onIconClick}>{ICONS[icon]}</button> : null}
-              <input
-                  {...props}
-                  onFocus={() => setHasFocus(true)}
-                  onBlur={() => setHasFocus(false)}
-                  className="w-full bg-transparent border-0 focus:ring-0 focus:outline-none focus:border-0 p-0 m-0"
-                  placeholder={placeholder}
-                  disabled={disabled}
-              />
-          </div>
-          {hasError && <p className="pl-4 text-f7 mt-1 text-error-red">{errorMessage}</p>}
+  useEffect(() => {
+    // melhorias de animação
+    if (errorMessage) setErrorMessageState(errorMessage)
+    else setTimeout(() => setErrorMessageState(''), 200)
+  }, [errorMessage])
+
+  return (
+      <div className="flex flex-col w-full">
+        {label && <label className={cn(labelClassNameVariants({ disabled, hasError, hasFocus }))}>{label}</label>}
+        <div className={cn(classNameVariants({ disabled, hasError }), className)}>
+            {!!icon ? <button className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))} onClick={onIconClick}>{ICONS[icon]}</button> : null}
+            <input
+                {...props}
+                onFocus={() => setHasFocus(true)}
+                onBlur={() => setHasFocus(false)}
+                className="w-full bg-transparent border-0 focus:ring-0 focus:outline-none focus:border-0 p-0 m-0"
+                placeholder={placeholder}
+                disabled={disabled}
+            />
         </div>
-    )
+        <p
+          // força um id aleatório se não for passado fieldName
+          id={fieldName ? `error-${fieldName}` : `error-${Math.random().toString(36).substr(2, 9)}`}
+          className={`pl-4 text-f7 mt-1 transition-all duration-200 ease-in-out ${hasError ? 'text-error-red max-h-4' : 'text-transparent max-h-0'}`}
+        >
+          {errorMessageState}
+        </p>
+      </div>
+  )
 }
 
 export default Input

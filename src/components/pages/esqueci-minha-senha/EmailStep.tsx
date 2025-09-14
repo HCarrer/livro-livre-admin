@@ -35,7 +35,7 @@ const EmailStep = ({handleClick} : {handleClick: () => void}) => {
 				className="w-full"
 				placeholder="E-mail"
 				type="text"
-				icon="avatar"
+				icon="email"
 				onChange={handleChange}
 				errorMessage={errors.email?.message}
 			/>
