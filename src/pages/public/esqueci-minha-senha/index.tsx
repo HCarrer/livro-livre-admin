@@ -34,7 +34,7 @@ const ForgottenPassword = () => {
 		<FormProvider {...methods} >
 			<Skeleton>
 					<div className="flex justify-center gap-x-4 items-center">
-						<p className="text-f2 font-semibold flex gap-x-2 items-center">
+						<p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
 							<Image src={Logo} width={38} height={53} alt="Logotipo - Livro Livre" />
 							Alterar Senha
 						</p>
