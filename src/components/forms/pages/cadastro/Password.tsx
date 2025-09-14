@@ -35,7 +35,7 @@ const Password = () => {
 				required: 'Campo obrigatório'
 			})}
 			className="w-full"
-			placeholder="Nova senha"
+			placeholder="Senha"
 			type={showPassword ? "text" : "password"}
 			icon={showPassword ? "openEye" : "closedEye"}
 			onChange={handlePasswordChange}

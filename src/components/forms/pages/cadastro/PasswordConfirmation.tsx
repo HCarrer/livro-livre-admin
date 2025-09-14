@@ -26,7 +26,7 @@ const PasswordConfirmation = () => {
 				validate: value => value === passwordValue || 'As senhas não coincidem'
 			})}
 			className="w-full"
-			placeholder="Nova senha"
+			placeholder="Confirme sua senha"
 			type={showPassword ? "text" : "password"}
 			icon={showPassword ? "openEye" : "closedEye"}
 			onChange={handlePasswordConfirmationChange}
