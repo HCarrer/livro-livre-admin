@@ -19,9 +19,9 @@ const Password = () => {
 	const newPasswordConfirmationValue = watch('newPasswordConfirmation')
 
 	useEffect(() => {
-		if (!!newPasswordConfirmationValue && newPasswordValue != newPasswordConfirmationValue)
+		if (!!newPasswordConfirmationValue && newPasswordValue !== newPasswordConfirmationValue)
 			setError('newPasswordConfirmation', { type: 'manual', message: 'As senhas não coincidem' })
-		else if (newPasswordValue == newPasswordConfirmationValue)
+		else if (newPasswordValue === newPasswordConfirmationValue)
 			clearErrors('newPasswordConfirmation')
 	}, [newPasswordValue, newPasswordConfirmationValue])
 
