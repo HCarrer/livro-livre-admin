@@ -1,12 +1,12 @@
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
 
-export interface AccordeonProps {
+export interface AccordionProps {
 	title: string
 	content: React.ReactNode | string
 }
 
-const Accordeon = ({ title, content }: AccordeonProps) => {
+const Accordion = ({ title, content }: AccordionProps) => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
@@ -26,4 +26,4 @@ const Accordeon = ({ title, content }: AccordeonProps) => {
 	)
 }
 
-export default Accordeon
+export default Accordion
