@@ -1,0 +1,19 @@
+import Image from "next/image"
+import Background from "../../../public/icons/background.svg";
+
+const Skeleton = ({
+  children
+}: {
+  children: React.ReactNode
+}) => {
+	return (
+		<div className="relative w-screen h-screen px-6 py-8 flex items-center justify-center">
+			<div className="z-2 w-full flex flex-col justify-center items-center gap-y-4">
+				{children}
+			</div>
+			<Image src={Background} width={496} height={744} alt="Marca D'agua - Livro Livre" className="absolute z-1" />
+		</div>
+	)
+}
+
+export default Skeleton
