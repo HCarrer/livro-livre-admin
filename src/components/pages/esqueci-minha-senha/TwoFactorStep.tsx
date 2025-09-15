@@ -13,10 +13,12 @@ const TwoFactorStep = ({handleClick} : {handleClick: () => void}) => {
 	} = useFormContext<ForgotPasswordFormProps>()
 
 	const twoFactorCodeValue = watch('twoFactorCode')
+	const emailValue = watch('email')
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setValue('twoFactorCode', e.target.value, { shouldValidate: true, shouldDirty: true })
 	}
+
 	const shouldDisableTwoFactorButton = useMemo(() => {
 		if (!twoFactorCodeValue) return true
 		if (twoFactorCodeValue) {
@@ -27,7 +29,11 @@ const TwoFactorStep = ({handleClick} : {handleClick: () => void}) => {
 
 	return (
 		<>
-			<p className="text-navy-blue text-f6">Preencha os campos abaixo com os 6 dígitos que enviamos para o e-mail <span className="text-power-blue font-semibold"></span></p>
+			<p className="text-navy-blue text-f6">Preencha os campos abaixo com os 6 dígitos que enviamos para o e-mail{' '}
+				<span className="text-power-blue font-semibold">
+				{emailValue}
+				</span>
+			</p>
 			<Input
 				{...register('twoFactorCode', {
 					required: 'Campo obrigatório'
