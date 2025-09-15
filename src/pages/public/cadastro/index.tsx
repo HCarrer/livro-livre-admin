@@ -1,19 +1,17 @@
 import Button from "@/design-system/button"
-import Input from "@/design-system/input"
 import Image from "next/image"
-import { useState } from "react"
 import Logo from "../../../../public/icons/logo.svg"
 import Link from "next/link"
 import { HOME, LOGIN } from "@/constants/routes"
 import { FormProvider, useForm } from "react-hook-form"
 import Skeleton from "@/components/common/Skeleton"
 import { SignUpFormDefaultValues, SignUpFormProps } from "@/constants/forms/cadastro"
-import { redirect } from "next/navigation"
 import { useRouter } from "next/router"
 import Email from "@/components/forms/pages/cadastro/Email"
 import Username from "@/components/forms/pages/cadastro/Username"
 import Password from "@/components/forms/pages/cadastro/Password"
 import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConfirmation"
+import { EMAIL_REGEX } from "@/constants/forms/common"
 
 const SignUp = () => {
 	const methods = useForm<SignUpFormProps>({
@@ -32,10 +30,9 @@ const SignUp = () => {
 
 	const onSubmit = (data: SignUpFormProps) => {
 		const { email, password, passwordConfirmation } = data
-		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 		let hasError = false
 
-		if (!emailRegex.test(email)) {
+		if (!EMAIL_REGEX.test(email)) {
 			setError('email', { type: 'manual', message: 'Formato inválido de e-mail' })
 			hasError = true
 		}

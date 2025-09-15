@@ -1,4 +1,5 @@
 import Email from "@/components/forms/pages/esqueci-minha-senha/Email"
+import { EMAIL_REGEX } from "@/constants/forms/common"
 import { ForgotPasswordFormProps } from "@/constants/forms/esqueci-minha-senha"
 import Button from "@/design-system/button"
 import { useMemo } from "react"
@@ -14,8 +15,7 @@ const EmailStep = ({handleClick} : {handleClick: () => void}) => {
 	const shouldDisableEmailButton = useMemo(() => {
 		if (!emailValue) return true
 		if (emailValue) {
-			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-			return !emailRegex.test(emailValue)
+			return !EMAIL_REGEX.test(emailValue)
 		}
 	}, [emailValue])
 
