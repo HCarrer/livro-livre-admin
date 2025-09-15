@@ -2,12 +2,14 @@ import Image from "next/image"
 import Background from "../../../public/icons/background.svg";
 
 const Skeleton = ({
-  children
+  children,
+	position = "center"
 }: {
   children: React.ReactNode
+	position?: "center" | "top"
 }) => {
 	return (
-		<div className="relative w-screen h-screen px-6 py-8 flex items-center justify-center">
+		<div className={`relative w-screen h-screen px-6 py-8 flex justify-center ${position === "center" ? "items-center" : "items-start"}`}>
 			<div className="z-2 w-full flex flex-col justify-center items-center gap-y-4">
 				{children}
 			</div>
