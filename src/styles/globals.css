@@ -15,6 +15,7 @@
   --softest-blue: #D3E0EA25;
   --softest-lilac: #B1B7C930;
   --power-blue-disabled: #CAD7E3;
+  --default-grey: #787D8B;
 }
 
 @theme inline {
@@ -31,6 +32,7 @@
   --color-softest-blue: var(--softest-blue);
   --color-softest-lilac: var(--softest-lilac);
   --color-power-blue-disabled: var(--power-blue-disabled);
+  --color-default-grey: var(--default-grey);
 }
 
 /* @media (prefers-color-scheme: dark) {
