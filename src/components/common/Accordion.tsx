@@ -17,7 +17,7 @@ const Accordion = ({ title, content }: AccordionProps) => {
 			</button>
 			<div className={`transition-all duration-200 ease-in-out overflow-hidden font-medium ${isOpen ? "max-h-96 mt-5" : "max-h-0"}`}>
 				{typeof content === "string" ? (
-					<p className="text-f7 text-[#787D8B]">
+					<p className="text-f7 text-default-grey">
 						{content}
 					</p>
 				) : content}
