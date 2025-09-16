@@ -13,7 +13,7 @@ const Skeleton = ({
 			<div className="z-10 w-full flex flex-col justify-center items-center gap-y-4">
 				{children}
 			</div>
-			<Image src={Background} width={496} height={744} alt="Marca D'agua - Livro Livre" className="absolute z-1" />
+			<Image src={Background} width={496} height={744} alt="Marca D'agua - Livro Livre" className="absolute z-0" />
 		</div>
 	)
 }
