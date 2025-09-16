@@ -35,12 +35,14 @@ const NavBar = () => {
 	}, [router.pathname])
 
 	return (
-		<div className="fixed bottom-6 left-6 z-10 w-[328px] p-1 border border-white bg-linear-to-b from-navy-blue/40 to-navy-blue/60 backdrop-blur-[5px] rounded-full flex justify-between items-center drop-shadow-[0px_0px_20px_#00000040]">
-			{SECTIONS.map((section, index) => (
-				<Link key={index} href={section.route} className={`w-11 aspect-square rounded-full flex justify-center items-center ${selected === section.id ? "bg-white" : ""}`}>
-					<section.icon size={28} strokeWidth={2} className={selected === section.id ? "text-navy-blue" : "text-white"} />
-				</Link>
-			))}
+		<div className="fixed bottom-6 px-6 z-10 w-full">
+			<div className="p-1 border border-white bg-linear-to-b from-navy-blue/40 to-navy-blue/60 backdrop-blur-[5px] rounded-full flex justify-between items-center drop-shadow-[0px_0px_20px_#00000040]">
+				{SECTIONS.map((section, index) => (
+					<Link key={index} href={section.route} className={`w-11 aspect-square rounded-full flex justify-center items-center ${selected === section.id ? "bg-white" : ""}`}>
+						<section.icon size={28} strokeWidth={2} className={selected === section.id ? "text-navy-blue" : "text-white"} />
+					</Link>
+				))}
+			</div>
 		</div>
 	)
 }
