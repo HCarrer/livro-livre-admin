@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint && prettier --check . && tsc --pretty --noEmit",
+    "format": "next lint --fix && prettier --write ."
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "eslint-config-prettier": "^10.1.8",
@@ -17,7 +19,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -28,6 +31,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.8",
     "typescript": "^5"
   }
 }
