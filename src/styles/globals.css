@@ -5,20 +5,20 @@
 
 :root {
   color-scheme: light;
-  --soft-white: #F2F4F7;
-  --soft-lilac: #B1B7C9;
-  --soft-sand: #E8E3DC;
-  --power-blue: #2F88E0;
-  --navy-blue: #2C3E50;
-  --soft-blue: #D3E0EA;
-  --disabled-grey: #E9E9E9;
-  --error-red: #C00000;
-  --disabled-blue: #2F88E025;
-  --disabled-navy: #2C3E5015;
-  --softest-blue: #D3E0EA25;
-  --softest-lilac: #B1B7C930;
-  --power-blue-disabled: #CAD7E3;
-  --default-grey: #787D8B;
+  --soft-white: #f2f4f7;
+  --soft-lilac: #b1b7c9;
+  --soft-sand: #e8e3dc;
+  --power-blue: #2f88e0;
+  --navy-blue: #2c3e50;
+  --soft-blue: #d3e0ea;
+  --disabled-grey: #e9e9e9;
+  --error-red: #c00000;
+  --disabled-blue: #2f88e025;
+  --disabled-navy: #2c3e5015;
+  --softest-blue: #d3e0ea25;
+  --softest-lilac: #b1b7c930;
+  --power-blue-disabled: #cad7e3;
+  --default-grey: #787d8b;
 
   /* SHADCN */
   --radius: 0.625rem;
