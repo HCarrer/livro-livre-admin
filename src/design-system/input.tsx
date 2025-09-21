@@ -1,8 +1,10 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import {
+  BookText,
   Eye,
   EyeClosed,
+  FilePlus2,
   Lock,
   LockOpen,
   Mail,
@@ -23,7 +25,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     | "openEye"
     | "locked"
     | "unlocked"
-    | "email";
+    | "email"
+    | "book"
+    | "file";
   className?: string;
   fieldName?: string;
   onIconClick?: () => void;
@@ -37,6 +41,8 @@ const ICONS: Record<NonNullable<InputProps["icon"]>, React.ReactNode> = {
   locked: <Lock size={20} />,
   unlocked: <LockOpen size={20} />,
   email: <Mail size={20} />,
+  book: <BookText size={20} />,
+  file: <FilePlus2 size={20} />,
 };
 
 const classNameVariants = cva(
@@ -106,6 +112,27 @@ const Input = ({
     else setTimeout(() => setErrorMessageState(""), 200);
   }, [errorMessage]);
 
+  const Icon = useMemo(() => {
+    if (!icon) return null;
+    const isClickable = !!onIconClick;
+    if (isClickable)
+      return (
+        <button
+          className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))}
+          onClick={onIconClick}
+        >
+          {ICONS[icon]}
+        </button>
+      );
+    return (
+      <div
+        className={cn(iconClassNameVariants({ isClickable: !!onIconClick }))}
+      >
+        {ICONS[icon]}
+      </div>
+    );
+  }, [icon, onIconClick]);
+
   return (
     <div className="flex flex-col w-full">
       {label && (
@@ -118,16 +145,7 @@ const Input = ({
         </label>
       )}
       <div className={cn(classNameVariants({ disabled, hasError }), className)}>
-        {!!icon ? (
-          <button
-            className={cn(
-              iconClassNameVariants({ isClickable: !!onIconClick }),
-            )}
-            onClick={onIconClick}
-          >
-            {ICONS[icon]}
-          </button>
-        ) : null}
+        {Icon}
         <input
           {...props}
           onFocus={() => setHasFocus(true)}
