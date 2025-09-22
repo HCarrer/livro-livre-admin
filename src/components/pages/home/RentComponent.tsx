@@ -1,6 +1,10 @@
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { RENT_BUTTON_LABEL } from "@/constants/common";
-import { STEPS } from "@/constants/forms/rent-modal-steps";
+import {
+  RENT_MODAL_DEFAULT_VALUES,
+  RentManualFillingProps,
+  STEPS,
+} from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
 import { useMemo, useState } from "react";
 import ModeSelectionStep from "./rent-modal-steps/ModeSelectionStep";
@@ -8,8 +12,15 @@ import ManualFillingStep from "./rent-modal-steps/ManualFillingStep";
 import LoadingStep from "./rent-modal-steps/LoadingStep";
 import BookConfirmation from "./rent-modal-steps/BookConfirmationStep";
 import SuccessStep from "./rent-modal-steps/SuccessStep";
+import { FormProvider, useForm } from "react-hook-form";
 
 const RentComponent = () => {
+  const methods = useForm<RentManualFillingProps>({
+    defaultValues: RENT_MODAL_DEFAULT_VALUES,
+    mode: "all",
+    criteriaMode: "all",
+  });
+
   const [step, setStep] = useState(STEPS.MODE_SELECTION);
 
   const StepComponent = useMemo(() => {
@@ -42,9 +53,11 @@ const RentComponent = () => {
         />
       </DrawerTrigger>
       <DrawerContent>
-        <div className="px-10 pt-8 pb-16 flex flex-col gap-y-4">
-          {StepComponent}
-        </div>
+        <FormProvider {...methods}>
+          <div className="px-10 pt-8 pb-16 flex flex-col gap-y-4">
+            {StepComponent}
+          </div>
+        </FormProvider>
       </DrawerContent>
     </Drawer>
   );
