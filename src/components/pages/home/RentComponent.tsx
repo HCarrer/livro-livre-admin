@@ -6,7 +6,7 @@ import {
   STEPS,
 } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ModeSelectionStep from "./rent-modal-steps/ModeSelectionStep";
 import ManualFillingStep from "./rent-modal-steps/ManualFillingStep";
 import LoadingStep from "./rent-modal-steps/LoadingStep";
@@ -21,7 +21,17 @@ const RentComponent = () => {
     criteriaMode: "all",
   });
 
+  const {
+    formState: { isSubmitting },
+  } = methods;
+
   const [step, setStep] = useState(STEPS.MODE_SELECTION);
+
+  useEffect(() => {
+    if (isSubmitting) {
+      setStep(STEPS.LOADING);
+    }
+  }, [isSubmitting]);
 
   const StepComponent = useMemo(() => {
     switch (step) {

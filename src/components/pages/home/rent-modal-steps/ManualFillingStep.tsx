@@ -12,9 +12,15 @@ import { useFormContext } from "react-hook-form";
 const ManualFillingStep = ({ setStep }: RentModalStepProps) => {
   const {
     formState: { isValid },
+    handleSubmit,
   } = useFormContext<RentManualFillingProps>();
 
-  console.log(isValid);
+  const onSubmit = async (data: RentManualFillingProps) => {
+    console.log(data);
+    // TODO: integrar com backend
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setStep(STEPS.CONFIRMATION);
+  };
 
   return (
     <>
@@ -25,22 +31,28 @@ const ManualFillingStep = ({ setStep }: RentModalStepProps) => {
         Preencha os campos abaixo exatamente como aparecem no livro para
         concluir o aluguel
       </p>
-      <BookName />
-      <AuthorName />
-      <PublisherName />
-      <div className="flex gap-x-4">
-        <Button
-          variant="outline"
-          label="Voltar"
-          onClick={() => setStep(STEPS.MODE_SELECTION)}
-        />
-        <Button
-          variant="main"
-          label="Continuar"
-          disabled={!isValid}
-          onClick={() => setStep(STEPS.LOADING)}
-        />
-      </div>
+      <form
+        name="manual-filling"
+        className="flex flex-col gap-y-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <BookName />
+        <AuthorName />
+        <PublisherName />
+        <div className="flex gap-x-4">
+          <Button
+            variant="outline"
+            label="Voltar"
+            onClick={() => setStep(STEPS.MODE_SELECTION)}
+          />
+          <Button
+            variant="main"
+            label="Continuar"
+            disabled={!isValid}
+            type="submit"
+          />
+        </div>
+      </form>
     </>
   );
 };
