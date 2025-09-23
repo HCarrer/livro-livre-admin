@@ -1,14 +1,17 @@
 import Accordion from "@/components/common/Accordion";
 import NavBar from "@/components/common/NavBar";
 import Skeleton from "@/components/common/Skeleton";
+import UserScore from "@/components/common/UserScore";
 import WelcomeBanner from "@/components/common/WelcomeBanner";
 import RentComponent from "@/components/pages/home/RentComponent";
 import { ACCORDIONS } from "@/constants/accordions";
 import { RETURN_BUTTON_LABEL } from "@/constants/common";
 import Button from "@/design-system/button";
 import { Bell } from "lucide-react";
+import { useState } from "react";
 
 const Home = () => {
+  const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
   return (
     <Skeleton position="top">
       <div className="w-full flex flex-col gap-y-6">
@@ -34,7 +37,8 @@ const Home = () => {
           </div>
         </div>
         {/* TODO: so mostrar no primeiro acesso do usuário */}
-        <WelcomeBanner />
+        {showWelcomeBanner ? <WelcomeBanner /> : null}
+        <UserScore booksRead={10} booksToReturn={5} />
         <div className="w-full flex flex-col gap-y-4 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
           {/* TODO: deixar botoes funcionais */}
           <RentComponent />
