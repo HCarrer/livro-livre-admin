@@ -1,69 +1,70 @@
-import { cn } from "@/lib/utils"
-import { cva } from "class-variance-authority"
+import { cn } from "@/lib/utils";
+import { cva } from "class-variance-authority";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    label?: string | React.ReactNode
-    variant?: 'main' | 'secondary' | 'tertiary' | 'outline' | 'primaryOutline'
-    disabled?: boolean
-    className?: string
+  label?: string | React.ReactNode;
+  variant?: "main" | "secondary" | "tertiary" | "outline" | "primaryOutline";
+  disabled?: boolean;
+  className?: string;
 }
 
 const classNameVariants = cva(
-  'px-6 py-3 min-w-[135px] h-[51px] text-f5 !leading-[16px] rounded-full font-semibold transition-all duration-100 ease-in-out hover:drop-shadow-[-2px_2px_4px_#00000030]',
+  "px-6 py-3 min-w-[135px] h-[51px] text-f5 !leading-[16px] rounded-full font-semibold transition-all duration-100 ease-in-out hover:drop-shadow-[-2px_2px_4px_#00000030]",
   {
     variants: {
       variant: {
-        main:
-          'bg-power-blue text-white',
-        secondary:
-          'bg-navy-blue text-white',
-        tertiary:
-          'bg-soft-white border border-soft-lilac text-soft-lilac',
-        outline:
-          'border border-navy-blue text-navy-blue',
-        primaryOutline:
-          'border border-power-blue text-power-blue',
+        main: "bg-power-blue text-white",
+        secondary: "bg-navy-blue text-white",
+        tertiary: "bg-soft-white border border-soft-lilac text-soft-lilac",
+        outline: "border border-navy-blue text-navy-blue",
+        primaryOutline: "border border-power-blue text-power-blue",
       },
       disabled: {
-        true: 'pointer-events-none',
-        false: 'cursor-pointer'
-      }
+        true: "pointer-events-none",
+        false: "cursor-pointer",
+      },
     },
     compoundVariants: [
       {
-        variant: 'main',
+        variant: "main",
         disabled: true,
-        class: 'bg-disabled-blue text-soft-lilac border border-soft-lilac'
+        class: "bg-disabled-blue text-soft-lilac border border-soft-lilac",
       },
       {
-        variant: 'secondary',
+        variant: "secondary",
         disabled: true,
-        class: 'bg-disabled-navy text-soft-lilac border border-soft-lilac'
+        class: "bg-disabled-navy text-soft-lilac border border-soft-lilac",
       },
       {
-        variant: 'tertiary',
+        variant: "tertiary",
         disabled: true,
-        class: 'bg-soft-white border border-soft-blue text-soft-blue'
+        class: "bg-soft-white border border-soft-blue text-soft-blue",
       },
       {
-        variant: 'outline',
+        variant: "outline",
         disabled: true,
-        class: 'border border-disabled-navy text-disabled-navy'
+        class: "border border-disabled-navy text-disabled-navy",
       },
       {
-        variant: 'primaryOutline',
+        variant: "primaryOutline",
         disabled: true,
-        class: 'border border-disabled-blue text-disabled-blue'
-      }
+        class: "border border-disabled-blue text-disabled-blue",
+      },
     ],
     defaultVariants: {
-      variant: 'main',
-    }
-  }
-)
+      variant: "main",
+    },
+  },
+);
 
-
-const Button = ({ label, onClick, variant = 'main', disabled = false, className, ...props }: ButtonProps) => {
+const Button = ({
+  label,
+  onClick,
+  variant = "main",
+  disabled = false,
+  className,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       {...props}
@@ -74,6 +75,6 @@ const Button = ({ label, onClick, variant = 'main', disabled = false, className,
       {label}
     </button>
   );
-}
+};
 
-export default Button
+export default Button;

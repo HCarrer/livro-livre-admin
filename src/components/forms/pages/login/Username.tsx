@@ -1,31 +1,34 @@
-import { LoginFormProps } from "@/constants/forms/login"
-import Input from "@/design-system/input"
-import { useFormContext } from "react-hook-form"
+import { LoginFormProps } from "@/constants/forms/login";
+import Input from "@/design-system/input";
+import { useFormContext } from "react-hook-form";
 
 const Username = () => {
-	const {
-		formState: { errors },
-		setValue,
-		register,
-	} = useFormContext<LoginFormProps>()
+  const {
+    formState: { errors },
+    setValue,
+    register,
+  } = useFormContext<LoginFormProps>();
 
-	const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setValue('username', e.target.value, { shouldValidate: true, shouldDirty: true })
-	}
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue("username", e.target.value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
 
-	return (
-		<Input
-			{...register('username', {
-				required: 'Campo obrigatório'
-			})}
-			className="w-full"
-			placeholder="Nome de usuário"
-			type="text"
-			icon="avatar"
-			onChange={handleUsernameChange}
-			errorMessage={errors.username?.message}
-		/>
-	)
-}
+  return (
+    <Input
+      {...register("username", {
+        required: "Campo obrigatório",
+      })}
+      className="w-full"
+      placeholder="Nome de usuário"
+      type="text"
+      icon="avatar"
+      onChange={handleUsernameChange}
+      errorMessage={errors.username?.message}
+    />
+  );
+};
 
-export default Username
+export default Username;

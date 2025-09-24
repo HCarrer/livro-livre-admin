@@ -1,13 +1,13 @@
-import NavBar from "@/components/common/NavBar"
-import Skeleton from "@/components/common/Skeleton"
+import NavBar from "@/components/common/NavBar";
+import Skeleton from "@/components/common/Skeleton";
 
 const SearchPage = () => {
-	return (
-		<Skeleton>
-			Search Page
-			<NavBar />
-		</Skeleton>
-	)
-}
+  return (
+    <Skeleton>
+      Search Page
+      <NavBar />
+    </Skeleton>
+  );
+};
 
-export default SearchPage
+export default SearchPage;
