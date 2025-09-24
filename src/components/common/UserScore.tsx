@@ -28,9 +28,9 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
   }, [ref.current, userRating]);
 
   const ratingBarColor = useMemo(() => {
-    if (userRating <= 2) return "#C00000"; // error-red
-    if (userRating <= 4) return "#DBD826";
-    return "#2F88E0"; // power-blue
+    if (userRating <= 2) return "var(--error-red)";
+    if (userRating <= 4) return "var(--warning-yellow)";
+    return "var(--power-blue)";
   }, [userRating]);
 
   return (
