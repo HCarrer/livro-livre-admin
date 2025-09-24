@@ -13,10 +13,13 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   // TODO: rever calculo
-  const userRating = useMemo(
-    () => 5 * (1 - booksToReturn / (booksToReturn + booksRead)),
-    [booksRead, booksToReturn],
-  );
+  const userRating = useMemo(() => {
+    const total = booksToReturn + booksRead;
+    if (total === 0) {
+      return 0;
+    }
+    return 5 * (1 - booksToReturn / total);
+  }, [booksRead, booksToReturn]);
 
   useLayoutEffect(() => {
     const rating = Math.floor(userRating) >= 5 ? 5 : Math.floor(userRating);
