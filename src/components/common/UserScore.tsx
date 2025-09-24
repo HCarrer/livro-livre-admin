@@ -10,6 +10,7 @@ interface UserScoreProps {
 const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
   const ref = useRef(null);
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
+  const [showTooltip, setShowTooltip] = useState(false);
 
   // TODO: rever calculo
   const userRating = useMemo(
@@ -18,7 +19,6 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
   );
 
   useLayoutEffect(() => {
-    console.log("ref.current", ref.current);
     const rating = Math.floor(userRating) >= 5 ? 5 : Math.floor(userRating);
     const fillPctg = (rating * 100) / 5;
     setProgressBarWidth(`${fillPctg}%`);
@@ -39,19 +39,15 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
         Devoluções pendentes:{" "}
         <span className="font-semibold">{booksToReturn}</span>
       </p>
-      <div className="flex flex-col gap-y-1">
+      <div className="relative flex flex-col gap-y-1">
         <p className="flex items-end text-f4 font-light">
           <span className="mr-1">Minha nota: </span>
-          <Tooltip>
+          <Tooltip open={showTooltip} onOpenChange={setShowTooltip}>
             <TooltipTrigger>
               <HelpCircle size={16} />
             </TooltipTrigger>
             <TooltipContent className="text-white font-semibold">
-              <p>
-                Sua nota é calculada com base no seu comprometimento em ler e
-                devolver os livros alugados.
-              </p>
-              <p>Por isso, é importante manter-se em dia com as devoluções.</p>
+              <p>Taxa entre livros lidos e devoluções pendentes.</p>
             </TooltipContent>
           </Tooltip>
         </p>
