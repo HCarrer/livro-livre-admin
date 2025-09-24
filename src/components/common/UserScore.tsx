@@ -1,5 +1,6 @@
 import { HelpCircle } from "lucide-react";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface UserScoreProps {
   booksRead?: number;
@@ -41,8 +42,18 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
       <div className="flex flex-col gap-y-1">
         <p className="flex items-end text-f4 font-light">
           <span className="mr-1">Minha nota: </span>
-          {/* TODO: tooltip */}
-          <HelpCircle size={16} />
+          <Tooltip>
+            <TooltipTrigger>
+              <HelpCircle size={16} />
+            </TooltipTrigger>
+            <TooltipContent className="text-white font-semibold">
+              <p>
+                Sua nota é calculada com base no seu comprometimento em ler e
+                devolver os livros alugados.
+              </p>
+              <p>Por isso, é importante manter-se em dia com as devoluções.</p>
+            </TooltipContent>
+          </Tooltip>
         </p>
         <div className="relative w-full h-3" id="user_rating_bar">
           <div className="absolute z-20 top-0 left-0 w-full h-full rounded-full border border-white" />
