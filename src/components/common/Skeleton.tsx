@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Background from "../../../public/icons/background.svg";
+import Background from "#/icons/background.svg";
 
 const Skeleton = ({
   children,

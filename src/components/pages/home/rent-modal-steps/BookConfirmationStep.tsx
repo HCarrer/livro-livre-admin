@@ -1,8 +1,7 @@
 import { RentModalStepProps, STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
-import BookCover from "../../../../../public/images/mock-book-cover.jpg";
+import BookCover from "#/images/mock-book-cover.jpg";
 import Image from "next/image";
-import { Star } from "lucide-react";
 import Rating from "@/components/common/Rating";
 
 const BookConfirmation = ({ setStep }: RentModalStepProps) => {

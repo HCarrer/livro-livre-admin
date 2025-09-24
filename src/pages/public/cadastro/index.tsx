@@ -1,6 +1,6 @@
 import Button from "@/design-system/button";
 import Image from "next/image";
-import Logo from "../../../../public/icons/logo.svg";
+import Logo from "#/icons/logo.svg";
 import Link from "next/link";
 import { HOME, LOGIN } from "@/constants/routes";
 import { FormProvider, useForm } from "react-hook-form";

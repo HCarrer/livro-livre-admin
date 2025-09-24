@@ -1,7 +1,7 @@
 import Button from "@/design-system/button";
 import Image from "next/image";
-import GoogleIcon from "../../../../public/icons/google.svg";
-import Logo from "../../../../public/icons/logo.svg";
+import GoogleIcon from "#/icons/google.svg";
+import Logo from "#/icons/logo.svg";
 import Link from "next/link";
 import { RESET_PASSWORD, SIGNUP } from "@/constants/routes";
 import { FormProvider, useForm } from "react-hook-form";
