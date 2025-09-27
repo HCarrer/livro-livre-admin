@@ -2,7 +2,8 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label?: string | React.ReactNode;
+  label?: string;
+  children?: React.ReactNode;
   variant?: "main" | "secondary" | "tertiary" | "outline" | "primaryOutline";
   disabled?: boolean;
   className?: string;
@@ -63,6 +64,7 @@ const Button = ({
   variant = "main",
   disabled = false,
   className,
+  children,
   ...props
 }: ButtonProps) => {
   return (
@@ -72,7 +74,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {label}
+      {children ?? label}
     </button>
   );
 };
