@@ -5,7 +5,13 @@ import Image from "next/image";
 import GoogleIcon from "#/icons/google.svg";
 import Logo from "#/icons/logo.svg";
 import Link from "next/link";
-import { HOME, RESET_PASSWORD, SIGNUP } from "@/constants/routes";
+import {
+  ACCESS_DENIED,
+  BOOLEAN_QUERY,
+  HOME,
+  RESET_PASSWORD,
+  SIGNUP,
+} from "@/constants/routes";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   LoginFormDefaultValues,
@@ -19,6 +25,8 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import Toast from "@/components/common/Toast";
 
 const GoogleButtonContent = () => {
   const provider = new GoogleAuthProvider();
@@ -80,6 +88,10 @@ const Login = () => {
     handleSubmit,
   } = methods;
 
+  const accessDenied =
+    useSearchParams().get(ACCESS_DENIED) === BOOLEAN_QUERY.TRUE;
+  console.log(accessDenied);
+
   const onSubmit = (data: LoginFormProps) => {
     // TODO: deixar login funcional e hashear senha
     console.log({ ...data });
@@ -87,6 +99,18 @@ const Login = () => {
 
   return (
     <Skeleton>
+      {accessDenied ? (
+        <Toast
+          content={
+            <p>
+              Acesso negado.
+              <br />
+              Faça login para continuar.
+            </p>
+          }
+          type="error"
+        />
+      ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image

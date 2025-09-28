@@ -6,3 +6,10 @@ export const HISTORY = "/historico";
 export const HOME = "/";
 export const SEARCH = "/buscar";
 export const PROFILE = "/perfil";
+
+export const ACCESS_DENIED = "acesso_negado";
+
+export const BOOLEAN_QUERY = {
+  TRUE: "sim",
+  FALSE: "não",
+};

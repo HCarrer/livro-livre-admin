@@ -8,12 +8,14 @@ import { ACCORDIONS } from "@/constants/accordions";
 import { RETURN_BUTTON_LABEL } from "@/constants/common";
 import Button from "@/design-system/button";
 import { onAuthStateChanged } from "firebase/auth";
-import { Bell, Icon, LoaderIcon } from "lucide-react";
+import { Bell, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { auth, db } from "+/authentication/firebase";
 import { User } from "@/interfaces/user";
 import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
+import Link from "next/link";
+import { PROFILE } from "@/constants/routes";
 
 const Home = () => {
   const [userData, setUserData] = useState<User | null>(null);
@@ -61,7 +63,10 @@ const Home = () => {
               <div className="absolute top-1.5 right-1.5 w-2 aspect-square rounded-full bg-power-blue" />
               <Bell size={28} strokeWidth={2} className="text-navy-blue" />
             </div>
-            <div className="flex justify-center items-center w-11 aspect-square rounded-full bg-navy-blue">
+            <Link
+              href={PROFILE}
+              className="flex justify-center items-center w-11 aspect-square rounded-full bg-navy-blue"
+            >
               {userData?.profilePicture ? (
                 <Image
                   src={userData.profilePicture}
@@ -76,10 +81,9 @@ const Home = () => {
                   {userData?.name ? userData.name.charAt(0) : "U"}
                 </p>
               )}
-            </div>
+            </Link>
           </div>
         </div>
-        {/* TODO: so mostrar no primeiro acesso do usuário */}
         {!userData?.hasClosedWelcomeBanner ? <WelcomeBanner /> : null}
         <UserScore booksRead={10} booksToReturn={5} />
         <div className="w-full flex flex-col gap-y-4 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">

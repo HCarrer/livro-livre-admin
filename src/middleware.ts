@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ACCESS_DENIED, BOOLEAN_QUERY, LOGIN } from "./constants/routes";
 
 const PUBLIC_ROUTE_PREFIX = "/public";
 
@@ -23,7 +24,7 @@ export async function middleware(request: NextRequest) {
 
   if (!authToken) {
     return NextResponse.redirect(
-      new URL("/public/login?access_denied=true", request.url),
+      new URL(`${LOGIN}?${ACCESS_DENIED}=${BOOLEAN_QUERY.TRUE}`, request.url),
     );
   }
 
