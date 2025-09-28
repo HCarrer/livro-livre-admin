@@ -1,10 +1,21 @@
+import { auth, db } from "+/authentication/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 import { X } from "lucide-react";
 import { useState } from "react";
 
 const WelcomeBanner = () => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const close = () => setIsOpen(false);
+  const close = async () => {
+    if (!auth.currentUser) return;
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+
+    updateDoc(userDocRef, {
+      hasClosedWelcomeBanner: true,
+    }).then(() => {
+      setIsOpen(false);
+    });
+  };
 
   return (
     <div
