@@ -8,26 +8,26 @@ import { ACCORDIONS } from "@/constants/accordions";
 import { RETURN_BUTTON_LABEL } from "@/constants/common";
 import Button from "@/design-system/button";
 import { onAuthStateChanged } from "firebase/auth";
-import { Bell } from "lucide-react";
+import { Bell, Icon, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { auth } from "+/authentication/firebase";
+import { auth, db } from "+/authentication/firebase";
 import { User } from "@/interfaces/user";
 import Image from "next/image";
+import { doc, getDoc } from "firebase/firestore";
 
 const Home = () => {
   const [userData, setUserData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUserData({
-          email: user.email,
-          name: user.displayName,
-          profilePicture: user.photoURL,
-          token: "2123",
-          hasClosedWelcomeBanner: false,
-        });
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const data = userDocSnapshot.data() as User;
+          setUserData(data);
+        }
       }
       setLoading(false);
     });
@@ -38,7 +38,9 @@ const Home = () => {
   if (loading)
     return (
       <Skeleton position="top">
-        <></>
+        <div className="h-screen w-full flex justify-center items-center">
+          <LoaderIcon className="animate-spin text-navy-blue" size={48} />
+        </div>
       </Skeleton>
     );
 

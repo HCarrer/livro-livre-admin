@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 const PUBLIC_ROUTE_PREFIX = "/public";
 
-const errorResponse = (status: number, message: string) => {
-  return NextResponse.json(message, { status });
-};
-
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAPIRoute = pathname.startsWith("/api");
