@@ -9,6 +9,7 @@ import {
   ACCESS_DENIED,
   BOOLEAN_QUERY,
   HOME,
+  LOGGED_OUT,
   RESET_PASSWORD,
   SIGNUP,
 } from "@/constants/routes";
@@ -90,7 +91,7 @@ const Login = () => {
 
   const accessDenied =
     useSearchParams().get(ACCESS_DENIED) === BOOLEAN_QUERY.TRUE;
-  console.log(accessDenied);
+  const loggedOut = useSearchParams().get(LOGGED_OUT) === BOOLEAN_QUERY.TRUE;
 
   const onSubmit = (data: LoginFormProps) => {
     // TODO: deixar login funcional e hashear senha
@@ -110,6 +111,9 @@ const Login = () => {
           }
           type="error"
         />
+      ) : null}
+      {loggedOut ? (
+        <Toast content="Desconectado com sucesso" type="success" />
       ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">

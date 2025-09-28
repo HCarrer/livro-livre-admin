@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ACCESS_DENIED, BOOLEAN_QUERY, LOGIN } from "./constants/routes";
+import {
+  ACCESS_DENIED,
+  BOOLEAN_QUERY,
+  LOGIN,
+  LOGOUT,
+} from "./constants/routes";
 
 const PUBLIC_ROUTE_PREFIX = "/public";
 
@@ -7,7 +12,20 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAPIRoute = pathname.startsWith("/api");
 
-  if (pathname.startsWith(PUBLIC_ROUTE_PREFIX)) return NextResponse.next();
+  if (pathname.startsWith(PUBLIC_ROUTE_PREFIX)) {
+    if (pathname === LOGOUT) {
+      const authToken = request.cookies.get("auth_token")?.value;
+      console.log("Deleting auth_token cookie:", authToken);
+      if (authToken) {
+        // Remove cookie
+        request.cookies.set(
+          "Set-Cookie",
+          `auth_token=; HttpOnly; Max-Age=0; Path=/`,
+        );
+      }
+    }
+    return NextResponse.next();
+  }
 
   let shouldIgnore = false;
   if (!isAPIRoute && pathname.startsWith(PUBLIC_ROUTE_PREFIX)) {
