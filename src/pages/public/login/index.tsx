@@ -40,12 +40,13 @@ const GoogleButtonContent = () => {
             profilePicture: user.photoURL,
             createdAt: new Date(),
             token: token,
+            hasClosedWelcomeBanner: false,
+            updatedAt: new Date(),
             // Adicione outros campos padrão conforme necessário
           });
         }
       }
-      const session = await axios.post("/api/session", { token: token });
-      console.log("token", token, session);
+      await axios.post("/api/session", { token: token });
       return router.push(HOME);
     } catch (error) {
       console.error("Erro ao fazer login com Google:", error);
