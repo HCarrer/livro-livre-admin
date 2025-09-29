@@ -17,17 +17,32 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   LoginFormDefaultValues,
   LoginFormProps,
+  TOAST_DICT,
 } from "@/constants/forms/login";
 import Skeleton from "@/components/common/Skeleton";
 import Username from "@/components/forms/pages/login/Username";
 import Password from "@/components/forms/pages/login/Password";
-import { db } from "+/authentication/firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { auth, db } from "+/authentication/firebase";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import router, { useRouter } from "next/router";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import Toast from "@/components/common/Toast";
+import { useEffect, useState } from "react";
 
 const GoogleButtonContent = () => {
   const provider = new GoogleAuthProvider();
@@ -78,6 +93,8 @@ const GoogleButtonContent = () => {
 };
 
 const Login = () => {
+  const [formError, setFormError] = useState<string | null>(null);
+
   const methods = useForm<LoginFormProps>({
     defaultValues: LoginFormDefaultValues,
     mode: "all",
@@ -85,7 +102,7 @@ const Login = () => {
   });
 
   const {
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
     handleSubmit,
   } = methods;
 
@@ -93,27 +110,44 @@ const Login = () => {
     useSearchParams().get(ACCESS_DENIED) === BOOLEAN_QUERY.TRUE;
   const loggedOut = useSearchParams().get(LOGGED_OUT) === BOOLEAN_QUERY.TRUE;
 
-  const onSubmit = (data: LoginFormProps) => {
-    // TODO: deixar login funcional e hashear senha
-    console.log({ ...data });
+  useEffect(() => {
+    if (accessDenied) setFormError(ACCESS_DENIED);
+    if (loggedOut) setFormError(LOGGED_OUT);
+  }, [accessDenied, loggedOut]);
+
+  const onSubmit = async (data: LoginFormProps) => {
+    setFormError(null);
+    // espera meio segundo para simular tempo de resposta da API
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const { username, password } = data;
+    const userDocRef = collection(db, "users");
+    const q = query(userDocRef, where("name", "==", username));
+    const querySnapshot = await getDocs(q);
+    let email = "";
+    if (querySnapshot.empty) {
+      setFormError("no-user-found");
+      return;
+    }
+    email = querySnapshot.docs[0].data().email;
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        const token = user ? await user.getIdToken() : null;
+        await axios.post("/api/session", { token: token });
+        return router.push(HOME);
+      })
+      .catch(() => {
+        setFormError("email-or-password-incorrect");
+      });
   };
 
   return (
     <Skeleton>
-      {accessDenied ? (
+      {formError ? (
         <Toast
-          content={
-            <p>
-              Acesso negado.
-              <br />
-              Faça login para continuar.
-            </p>
-          }
-          type="error"
+          content={TOAST_DICT[formError].content || formError}
+          type={TOAST_DICT[formError].type || "error"}
         />
-      ) : null}
-      {loggedOut ? (
-        <Toast content="Desconectado com sucesso" type="success" />
       ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
@@ -134,8 +168,8 @@ const Login = () => {
         label="Realizar login"
         variant="main"
         disabled={!isValid}
-        type="submit"
         onClick={handleSubmit(onSubmit)}
+        loading={isSubmitting}
         className="w-full"
       />
       <div className="w-full flex justify-between text-f7">
