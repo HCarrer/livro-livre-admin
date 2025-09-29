@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import { LucideX } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface ToastProps {
+export interface ToastProps {
   content: string | React.ReactNode;
   type?: "success" | "error" | "warning";
   duration?: number;

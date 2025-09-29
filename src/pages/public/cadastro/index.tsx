@@ -8,6 +8,7 @@ import Skeleton from "@/components/common/Skeleton";
 import {
   SignUpFormDefaultValues,
   SignUpFormProps,
+  TOAST_DICT,
 } from "@/constants/forms/cadastro";
 import { useRouter } from "next/router";
 import Email from "@/components/forms/pages/cadastro/Email";
@@ -23,9 +24,7 @@ import { useState } from "react";
 import Toast from "@/components/common/Toast";
 
 const SignUp = () => {
-  const [formError, setFormError] = useState<string | null>(
-    "E-mail já está em uso",
-  );
+  const [formError, setFormError] = useState<string | null>(null);
   const methods = useForm<SignUpFormProps>({
     defaultValues: SignUpFormDefaultValues,
     mode: "all",
@@ -33,7 +32,7 @@ const SignUp = () => {
   });
 
   const {
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
     handleSubmit,
     setError,
   } = methods;
@@ -69,6 +68,7 @@ const SignUp = () => {
       return false;
     }
     setFormError(null);
+    // TODO: Verificar se o username já existe
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -94,16 +94,21 @@ const SignUp = () => {
       .catch((error) => {
         const errorCode = error.code;
         if (errorCode === "auth/email-already-in-use") {
-          setFormError("E-mail já está em uso");
+          setFormError("email-unavailable");
         } else {
-          setFormError("Erro ao criar conta. Tente novamente.");
+          setFormError("generic-error");
         }
       });
   };
 
   return (
     <Skeleton>
-      {formError ? <Toast content={formError} type="error" /> : null}
+      {formError ? (
+        <Toast
+          content={TOAST_DICT[formError].content}
+          type={TOAST_DICT[formError].type}
+        />
+      ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image
@@ -134,7 +139,7 @@ const SignUp = () => {
           label="Criar conta"
           variant="main"
           disabled={!isValid}
-          type="submit"
+          loading={isSubmitting}
           onClick={handleSubmit(onSubmit)}
           className="w-full"
         />
