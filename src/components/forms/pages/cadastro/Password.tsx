@@ -42,10 +42,6 @@ const Password = () => {
     <Input
       {...register("password", {
         required: "Campo obrigatório",
-        minLength: {
-          value: 6,
-          message: "A senha deve ter no mínimo 6 caracteres",
-        },
       })}
       className="w-full"
       placeholder="Senha"

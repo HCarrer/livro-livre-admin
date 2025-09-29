@@ -15,7 +15,6 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith(PUBLIC_ROUTE_PREFIX)) {
     if (pathname === LOGOUT) {
       const authToken = request.cookies.get("auth_token")?.value;
-      console.log("Deleting auth_token cookie:", authToken);
       if (authToken) {
         // Remove cookie
         request.cookies.set(

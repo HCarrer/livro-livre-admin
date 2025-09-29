@@ -19,8 +19,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth/web-extension";
 import { auth, db } from "+/authentication/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import axios from "axios";
+import { useState } from "react";
+import Toast from "@/components/common/Toast";
 
 const SignUp = () => {
+  const [formError, setFormError] = useState<string | null>(
+    "E-mail já está em uso",
+  );
   const methods = useForm<SignUpFormProps>({
     defaultValues: SignUpFormDefaultValues,
     mode: "all",
@@ -46,6 +51,13 @@ const SignUp = () => {
       });
       hasError = true;
     }
+    if (password.length < 6) {
+      setError("password", {
+        type: "manual",
+        message: "A senha deve ter no mínimo 6 caracteres",
+      });
+      hasError = true;
+    }
     if (password !== passwordConfirmation) {
       setError("passwordConfirmation", {
         type: "manual",
@@ -56,6 +68,7 @@ const SignUp = () => {
     if (hasError) {
       return false;
     }
+    setFormError(null);
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -81,25 +94,16 @@ const SignUp = () => {
       .catch((error) => {
         const errorCode = error.code;
         if (errorCode === "auth/email-already-in-use") {
-          setError("email", {
-            type: "manual",
-            message: "E-mail já está em uso",
-          });
+          setFormError("E-mail já está em uso");
         } else {
-          setError("email", {
-            type: "manual",
-            message: "Erro ao criar conta. Tente novamente.",
-          });
+          setFormError("Erro ao criar conta. Tente novamente.");
         }
       });
-    // TODO: deixar cadastro funcional e hashear senha
-    // TODO: validar se email e username já existem
-    console.log(data);
-    // return router.push(HOME);
   };
 
   return (
     <Skeleton>
+      {formError ? <Toast content={formError} type="error" /> : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image
