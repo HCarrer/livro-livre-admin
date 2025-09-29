@@ -15,6 +15,10 @@ import Username from "@/components/forms/pages/cadastro/Username";
 import Password from "@/components/forms/pages/cadastro/Password";
 import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConfirmation";
 import { EMAIL_REGEX } from "@/constants/forms/common";
+import { createUserWithEmailAndPassword } from "firebase/auth/web-extension";
+import { auth, db } from "+/authentication/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import axios from "axios";
 
 const SignUp = () => {
   const methods = useForm<SignUpFormProps>({
@@ -31,8 +35,8 @@ const SignUp = () => {
 
   const router = useRouter();
 
-  const onSubmit = (data: SignUpFormProps) => {
-    const { email, password, passwordConfirmation } = data;
+  const onSubmit = async (data: SignUpFormProps) => {
+    const { email, password, passwordConfirmation, username } = data;
     let hasError = false;
 
     if (!EMAIL_REGEX.test(email)) {
@@ -52,10 +56,46 @@ const SignUp = () => {
     if (hasError) {
       return false;
     }
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        const token = user ? await user.getIdToken() : null;
+        if (user) {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+          if (!userDocSnapshot.exists()) {
+            await setDoc(userDocRef, {
+              email: email,
+              name: username,
+              profilePicture: "",
+              createdAt: new Date(),
+              token: token,
+              hasClosedWelcomeBanner: false,
+              updatedAt: new Date(),
+            });
+          }
+        }
+        await axios.post("/api/session", { token: token });
+        return router.push(HOME);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        if (errorCode === "auth/email-already-in-use") {
+          setError("email", {
+            type: "manual",
+            message: "E-mail já está em uso",
+          });
+        } else {
+          setError("email", {
+            type: "manual",
+            message: "Erro ao criar conta. Tente novamente.",
+          });
+        }
+      });
     // TODO: deixar cadastro funcional e hashear senha
     // TODO: validar se email e username já existem
     console.log(data);
-    return router.push(HOME);
+    // return router.push(HOME);
   };
 
   return (

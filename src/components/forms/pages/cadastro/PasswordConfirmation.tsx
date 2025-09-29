@@ -28,6 +28,10 @@ const PasswordConfirmation = () => {
     <Input
       {...register("passwordConfirmation", {
         required: "Campo obrigatório",
+        minLength: {
+          value: 6,
+          message: "A senha deve ter no mínimo 6 caracteres",
+        },
         validate: (value) =>
           value === passwordValue || "As senhas não coincidem",
       })}

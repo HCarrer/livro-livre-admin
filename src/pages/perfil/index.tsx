@@ -43,14 +43,20 @@ const ProfilePage = () => {
   return (
     <Skeleton>
       <div className="flex justify-center items-center w-16 aspect-square rounded-full bg-navy-blue">
-        <Image
-          src={userData?.profilePicture || ""}
-          alt="Foto de perfil"
-          className="w-full h-full object-cover rounded-full"
-          width={64}
-          height={64}
-          style={{ borderRadius: "9999px", objectFit: "cover" }}
-        />
+        {userData?.profilePicture ? (
+          <Image
+            src={userData.profilePicture}
+            alt="Foto de perfil"
+            className="w-full h-full object-cover rounded-full"
+            width={64}
+            height={64}
+            style={{ borderRadius: "9999px", objectFit: "cover" }}
+          />
+        ) : (
+          <p className="text-white font-semibold text-f3 !leading-[24px]">
+            {userData?.name ? userData.name.charAt(0) : "U"}
+          </p>
+        )}
       </div>
       {userData?.name}
       <Link href={LOGOUT}>

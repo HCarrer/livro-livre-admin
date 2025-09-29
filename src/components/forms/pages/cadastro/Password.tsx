@@ -42,6 +42,10 @@ const Password = () => {
     <Input
       {...register("password", {
         required: "Campo obrigatório",
+        minLength: {
+          value: 6,
+          message: "A senha deve ter no mínimo 6 caracteres",
+        },
       })}
       className="w-full"
       placeholder="Senha"
@@ -49,6 +53,7 @@ const Password = () => {
       icon={showPassword ? "openEye" : "closedEye"}
       onChange={handlePasswordChange}
       onIconClick={() => setShowPassword(!showPassword)}
+      minLength={6}
       errorMessage={errors.password?.message}
     />
   );
