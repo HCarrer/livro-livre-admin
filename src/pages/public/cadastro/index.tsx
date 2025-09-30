@@ -8,6 +8,7 @@ import Skeleton from "@/components/common/Skeleton";
 import {
   SignUpFormDefaultValues,
   SignUpFormProps,
+  SIGN_UP_TOAST_DICT,
 } from "@/constants/forms/cadastro";
 import { useRouter } from "next/router";
 import Email from "@/components/forms/pages/cadastro/Email";
@@ -15,8 +16,14 @@ import Username from "@/components/forms/pages/cadastro/Username";
 import Password from "@/components/forms/pages/cadastro/Password";
 import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConfirmation";
 import { EMAIL_REGEX } from "@/constants/forms/common";
+import { useState } from "react";
+import Toast from "@/components/common/Toast";
+import { createAccount } from "@/services/authentication";
 
 const SignUp = () => {
+  const [formError, setFormError] = useState<
+    keyof typeof SIGN_UP_TOAST_DICT | null
+  >(null);
   const methods = useForm<SignUpFormProps>({
     defaultValues: SignUpFormDefaultValues,
     mode: "all",
@@ -24,21 +31,29 @@ const SignUp = () => {
   });
 
   const {
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
     handleSubmit,
     setError,
   } = methods;
 
   const router = useRouter();
 
-  const onSubmit = (data: SignUpFormProps) => {
-    const { email, password, passwordConfirmation } = data;
+  const onSubmit = async (data: SignUpFormProps) => {
+    setFormError(null);
+    const { email, password, passwordConfirmation, username } = data;
     let hasError = false;
 
     if (!EMAIL_REGEX.test(email)) {
       setError("email", {
         type: "manual",
         message: "Formato inválido de e-mail",
+      });
+      hasError = true;
+    }
+    if (password.length < 6) {
+      setError("password", {
+        type: "manual",
+        message: "A senha deve ter no mínimo 6 caracteres",
       });
       hasError = true;
     }
@@ -52,14 +67,22 @@ const SignUp = () => {
     if (hasError) {
       return false;
     }
-    // TODO: deixar cadastro funcional e hashear senha
-    // TODO: validar se email e username já existem
-    console.log(data);
-    return router.push(HOME);
+    const { success, toastId } = await createAccount(email, password, username);
+    if (success) {
+      return router.push(HOME);
+    } else {
+      setFormError(toastId);
+    }
   };
 
   return (
     <Skeleton>
+      {formError ? (
+        <Toast
+          content={SIGN_UP_TOAST_DICT[formError].content}
+          type={SIGN_UP_TOAST_DICT[formError].type}
+        />
+      ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image
@@ -90,7 +113,7 @@ const SignUp = () => {
           label="Criar conta"
           variant="main"
           disabled={!isValid}
-          type="submit"
+          loading={isSubmitting}
           onClick={handleSubmit(onSubmit)}
           className="w-full"
         />

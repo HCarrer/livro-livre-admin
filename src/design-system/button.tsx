@@ -1,11 +1,14 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
+import { LucideLoaderCircle } from "lucide-react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label?: string | React.ReactNode;
+  label?: string;
+  children?: React.ReactNode;
   variant?: "main" | "secondary" | "tertiary" | "outline" | "primaryOutline";
   disabled?: boolean;
   className?: string;
+  loading?: boolean;
 }
 
 const classNameVariants = cva(
@@ -22,6 +25,10 @@ const classNameVariants = cva(
       disabled: {
         true: "pointer-events-none",
         false: "cursor-pointer",
+      },
+      loading: {
+        true: "pointer-events-none",
+        false: "",
       },
     },
     compoundVariants: [
@@ -50,6 +57,21 @@ const classNameVariants = cva(
         disabled: true,
         class: "border border-disabled-blue text-disabled-blue",
       },
+      {
+        variant: "main",
+        loading: true,
+        class: "bg-power-blue/80",
+      },
+      {
+        variant: "secondary",
+        loading: true,
+        class: "bg-navy-blue/80",
+      },
+      {
+        variant: "tertiary",
+        loading: true,
+        class: "bg-soft-white/80",
+      },
     ],
     defaultVariants: {
       variant: "main",
@@ -63,16 +85,25 @@ const Button = ({
   variant = "main",
   disabled = false,
   className,
+  children,
+  loading = false,
   ...props
 }: ButtonProps) => {
   return (
     <button
       {...props}
-      className={cn(classNameVariants({ variant, disabled }), className)}
+      className={cn(
+        classNameVariants({ variant, disabled, loading }),
+        className,
+      )}
       onClick={onClick}
       disabled={disabled}
     >
-      {label}
+      {loading ? (
+        <LucideLoaderCircle size={24} className="mx-auto animate-spin" />
+      ) : (
+        (children ?? label)
+      )}
     </button>
   );
 };

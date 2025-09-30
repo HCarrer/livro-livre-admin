@@ -49,6 +49,7 @@ const Password = () => {
       icon={showPassword ? "openEye" : "closedEye"}
       onChange={handlePasswordChange}
       onIconClick={() => setShowPassword(!showPassword)}
+      minLength={6}
       errorMessage={errors.password?.message}
     />
   );
