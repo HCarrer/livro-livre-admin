@@ -89,7 +89,7 @@ export const login = async (
     await axios.post("/api/session", { token: token });
     return { success: true, status: 200, errorType: "Login successful" };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: FirebaseError | any) {
+  } catch (error: unknown) {
     if (
       error instanceof FirebaseError &&
       error.code === "auth/invalid-credential"
