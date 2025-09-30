@@ -52,7 +52,7 @@ export const loginWithGoogle = async (): Promise<{
     return {
       success: false,
       status: 500,
-      toastId: `Error logging in with Google: ${error}`,
+      toastId: "bad-request",
     };
   }
 };
