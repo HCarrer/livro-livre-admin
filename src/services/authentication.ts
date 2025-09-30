@@ -64,8 +64,6 @@ export const login = async (
   status: number;
   errorType: keyof typeof LOGIN_TOAST_DICT;
 }> => {
-  
-  
   try {
     const userDocRef = collection(db, "users");
     const q = query(userDocRef, where("name", "==", username));
@@ -88,7 +86,6 @@ export const login = async (
       : null;
     await axios.post("/api/session", { token: token });
     return { success: true, status: 200, errorType: "Login successful" };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: unknown) {
     if (
       error instanceof FirebaseError &&
@@ -151,7 +148,6 @@ export const createAccount = async (
       status: 200,
       errorType: "Account created successfully",
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: unknown) {
     if (
       error instanceof FirebaseError &&
