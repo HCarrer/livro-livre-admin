@@ -14,15 +14,15 @@ export const SignUpFormDefaultValues = {
   passwordConfirmation: "",
 };
 
-export const TOAST_DICT: Record<
+export const SIGN_UP_TOAST_DICT: Record<
   string,
   { type: ToastProps["type"]; content: ToastProps["content"] }
 > = {
   ["email-unavailable"]: {
-    content: "E-mail já está em uso.",
+    content: "E-mail indisponível.",
     type: "error",
   },
-  ["generic-error"]: {
+  ["bad-request"]: {
     content: "Erro ao criar conta. Tente novamente.",
     type: "error",
   },

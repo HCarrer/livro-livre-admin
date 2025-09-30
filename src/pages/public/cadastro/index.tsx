@@ -8,7 +8,7 @@ import Skeleton from "@/components/common/Skeleton";
 import {
   SignUpFormDefaultValues,
   SignUpFormProps,
-  TOAST_DICT,
+  SIGN_UP_TOAST_DICT,
 } from "@/constants/forms/cadastro";
 import { useRouter } from "next/router";
 import Email from "@/components/forms/pages/cadastro/Email";
@@ -16,25 +16,14 @@ import Username from "@/components/forms/pages/cadastro/Username";
 import Password from "@/components/forms/pages/cadastro/Password";
 import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConfirmation";
 import { EMAIL_REGEX } from "@/constants/forms/common";
-import { createUserWithEmailAndPassword } from "firebase/auth/web-extension";
-import { auth, db } from "+/authentication/firebase";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
-import axios from "axios";
 import { useState } from "react";
 import Toast from "@/components/common/Toast";
+import { createAccount } from "@/services/authentication";
 
 const SignUp = () => {
-  const [formError, setFormError] = useState<keyof typeof TOAST_DICT | null>(
-    null,
-  );
+  const [formError, setFormError] = useState<
+    keyof typeof SIGN_UP_TOAST_DICT | null
+  >(null);
   const methods = useForm<SignUpFormProps>({
     defaultValues: SignUpFormDefaultValues,
     mode: "all",
@@ -80,51 +69,24 @@ const SignUp = () => {
     if (hasError) {
       return false;
     }
-    const userDocRef = collection(db, "users");
-    const q = query(userDocRef, where("name", "==", username));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      setFormError("username-unavailable");
-      return;
+    const { success, errorType } = await createAccount(
+      email,
+      password,
+      username,
+    );
+    if (success) {
+      return router.push(HOME);
+    } else {
+      setFormError(errorType);
     }
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        const token = user ? await user.getIdToken() : null;
-        if (user) {
-          const userDocRef = doc(db, "users", user.uid);
-          const userDocSnapshot = await getDoc(userDocRef);
-          if (!userDocSnapshot.exists()) {
-            await setDoc(userDocRef, {
-              email: email,
-              name: username,
-              profilePicture: "",
-              createdAt: new Date(),
-              token: token,
-              hasClosedWelcomeBanner: false,
-              updatedAt: new Date(),
-            });
-          }
-        }
-        await axios.post("/api/session", { token: token });
-        return router.push(HOME);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        if (errorCode === "auth/email-already-in-use") {
-          setFormError("email-unavailable");
-        } else {
-          setFormError("generic-error");
-        }
-      });
   };
 
   return (
     <Skeleton>
       {formError ? (
         <Toast
-          content={TOAST_DICT[formError].content}
-          type={TOAST_DICT[formError].type}
+          content={SIGN_UP_TOAST_DICT[formError].content}
+          type={SIGN_UP_TOAST_DICT[formError].type}
         />
       ) : null}
       <div className="flex justify-center gap-x-4 items-center">
