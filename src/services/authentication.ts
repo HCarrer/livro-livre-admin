@@ -64,8 +64,8 @@ export const login = async (
   status: number;
   errorType: keyof typeof LOGIN_TOAST_DICT;
 }> => {
-  // espera meio segundo para simular tempo de resposta da API
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  
+  
   try {
     const userDocRef = collection(db, "users");
     const q = query(userDocRef, where("name", "==", username));
