@@ -26,4 +26,8 @@ export const TOAST_DICT: Record<
     content: "Erro ao criar conta. Tente novamente.",
     type: "error",
   },
+  ["username-unavailable"]: {
+    content: "Nome de usuário indisponível.",
+    type: "error",
+  },
 };

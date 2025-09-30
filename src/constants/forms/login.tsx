@@ -25,9 +25,8 @@ export const TOAST_DICT: Record<
       </p>
     ),
   },
-  ["no-user-found"]: { content: "Usuário não encontrado.", type: "error" },
-  ["email-or-password-incorrect"]: {
-    content: "E-mail ou senha incorretos.",
+  ["username-or-password-incorrect"]: {
+    content: "Nome de usuário ou senha incorretos.",
     type: "error",
   },
   [LOGGED_OUT]: { content: "Desconectado com sucesso.", type: "success" },

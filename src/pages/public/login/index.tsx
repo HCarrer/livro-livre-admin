@@ -93,7 +93,9 @@ const GoogleButtonContent = () => {
 };
 
 const Login = () => {
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<keyof typeof TOAST_DICT | null>(
+    null,
+  );
 
   const methods = useForm<LoginFormProps>({
     defaultValues: LoginFormDefaultValues,
@@ -123,12 +125,11 @@ const Login = () => {
     const userDocRef = collection(db, "users");
     const q = query(userDocRef, where("name", "==", username));
     const querySnapshot = await getDocs(q);
-    let email = "";
     if (querySnapshot.empty) {
-      setFormError("no-user-found");
+      setFormError("username-or-password-incorrect");
       return;
     }
-    email = querySnapshot.docs[0].data().email;
+    const email = querySnapshot.docs[0].data().email;
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -137,7 +138,7 @@ const Login = () => {
         return router.push(HOME);
       })
       .catch(() => {
-        setFormError("email-or-password-incorrect");
+        setFormError("username-or-password-incorrect");
       });
   };
 

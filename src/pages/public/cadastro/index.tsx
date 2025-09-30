@@ -18,13 +18,23 @@ import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConf
 import { EMAIL_REGEX } from "@/constants/forms/common";
 import { createUserWithEmailAndPassword } from "firebase/auth/web-extension";
 import { auth, db } from "+/authentication/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import axios from "axios";
 import { useState } from "react";
 import Toast from "@/components/common/Toast";
 
 const SignUp = () => {
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<keyof typeof TOAST_DICT | null>(
+    null,
+  );
   const methods = useForm<SignUpFormProps>({
     defaultValues: SignUpFormDefaultValues,
     mode: "all",
@@ -40,6 +50,9 @@ const SignUp = () => {
   const router = useRouter();
 
   const onSubmit = async (data: SignUpFormProps) => {
+    setFormError(null);
+    // espera meio segundo para simular tempo de resposta da API
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const { email, password, passwordConfirmation, username } = data;
     let hasError = false;
 
@@ -67,8 +80,13 @@ const SignUp = () => {
     if (hasError) {
       return false;
     }
-    setFormError(null);
-    // TODO: Verificar se o username já existe
+    const userDocRef = collection(db, "users");
+    const q = query(userDocRef, where("name", "==", username));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      setFormError("username-unavailable");
+      return;
+    }
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
