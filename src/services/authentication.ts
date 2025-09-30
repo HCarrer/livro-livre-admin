@@ -49,6 +49,7 @@ export const loginWithGoogle = async (): Promise<{
     await axios.post("/api/session", { token: token });
     return { success: true, status: 200, toastId: "success" };
   } catch (error) {
+    console.error("Error logging in with Google: ", error);
     return {
       success: false,
       status: 500,
