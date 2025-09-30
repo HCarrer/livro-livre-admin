@@ -152,7 +152,7 @@ export const createAccount = async (
       errorType: "Account created successfully",
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: FirebaseError | any) {
+  } catch (error: unknown) {
     if (
       error instanceof FirebaseError &&
       error.code === "auth/email-already-in-use"
