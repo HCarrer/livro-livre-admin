@@ -67,15 +67,11 @@ const SignUp = () => {
     if (hasError) {
       return false;
     }
-    const { success, errorType } = await createAccount(
-      email,
-      password,
-      username,
-    );
+    const { success, toastId } = await createAccount(email, password, username);
     if (success) {
       return router.push(HOME);
     } else {
-      setFormError(errorType);
+      setFormError(toastId);
     }
   };
 

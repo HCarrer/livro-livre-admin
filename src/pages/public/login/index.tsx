@@ -36,10 +36,10 @@ const GoogleButtonContent = ({
   const router = useRouter();
 
   const handleClick = async () => {
-    const { success, errorType } = await loginWithGoogle();
+    const { success, toastId } = await loginWithGoogle();
     if (success) {
       return router.push(HOME);
-    } else triggerError(errorType);
+    } else triggerError(toastId);
   };
 
   return (
@@ -85,11 +85,11 @@ const Login = () => {
   const onSubmit = async (data: LoginFormProps) => {
     setFormError(null);
     const { username, password } = data;
-    const { success, errorType } = await login(username, password);
+    const { success, toastId } = await login(username, password);
     if (success) {
       return router.push(HOME);
     } else {
-      setFormError(errorType as keyof typeof LOGIN_TOAST_DICT);
+      setFormError(toastId as keyof typeof LOGIN_TOAST_DICT);
     }
   };
 
