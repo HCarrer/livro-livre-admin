@@ -1,7 +1,6 @@
 import { auth, db } from "+/authentication/firebase";
 import { SIGN_UP_TOAST_DICT } from "@/constants/forms/cadastro";
 import { LOGIN_TOAST_DICT } from "@/constants/forms/login";
-import { BOOLEAN_QUERY, LOGIN } from "@/constants/routes";
 import axios from "axios";
 import { FirebaseError } from "firebase/app";
 import {
