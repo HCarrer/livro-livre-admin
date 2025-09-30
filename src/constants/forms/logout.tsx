@@ -8,4 +8,8 @@ export const LOGOUT_TOAST_DICT: Record<
     content: "Erro ao desconectar. Tente novamente",
     type: "error",
   },
+  ["success"]: {
+    content: "Logout realizado com sucesso.",
+    type: "success",
+  },
 };
