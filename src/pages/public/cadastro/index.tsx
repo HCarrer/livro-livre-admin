@@ -40,8 +40,6 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormProps) => {
     setFormError(null);
-    // espera meio segundo para simular tempo de resposta da API
-    await new Promise((resolve) => setTimeout(resolve, 500));
     const { email, password, passwordConfirmation, username } = data;
     let hasError = false;
 
