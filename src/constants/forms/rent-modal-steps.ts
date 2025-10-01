@@ -1,3 +1,5 @@
+import { RentManualFillingProps } from "@/interfaces/rentDrawer";
+
 export const STEPS: Record<string, number> = {
   MODE_SELECTION: 0,
   QR_CODE_SCANNING: 1,
@@ -7,16 +9,6 @@ export const STEPS: Record<string, number> = {
   CONFIRMATION: 5,
   SUCCESS: 6,
 };
-
-export interface RentModalStepProps {
-  setStep: (step: number) => void;
-}
-
-export interface RentManualFillingProps {
-  bookName: string;
-  authorName: string;
-  publisherName: string;
-}
 
 export const RENT_MODAL_DEFAULT_VALUES: RentManualFillingProps = {
   bookName: "",

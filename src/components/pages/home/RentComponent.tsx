@@ -2,7 +2,6 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { RENT_BUTTON_LABEL } from "@/constants/common";
 import {
   RENT_MODAL_DEFAULT_VALUES,
-  RentManualFillingProps,
   STEPS,
 } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
@@ -17,6 +16,7 @@ import SuccessStep from "./rent-modal-steps/SuccessStep";
 import { FormProvider, useForm } from "react-hook-form";
 import BookNotFound from "./rent-modal-steps/BookNotFound";
 import QrCodeScanning from "./rent-modal-steps/QrCodeScanning";
+import { RentManualFillingProps } from "@/interfaces/rentDrawer";
 
 const RentComponent = () => {
   const [foundBook, setFoundBook] = useState<IBook | undefined>(undefined);
@@ -56,7 +56,9 @@ const RentComponent = () => {
       case STEPS.MODE_SELECTION:
         return <ModeSelectionStep setStep={setStep} />;
       case STEPS.QR_CODE_SCANNING:
-        return <QrCodeScanning />;
+        return (
+          <QrCodeScanning setStep={setStep} onSubmitData={handleBookSearch} />
+        );
       case STEPS.LOADING:
         return <LoadingStep />;
       case STEPS.MANUAL_FILLING:
