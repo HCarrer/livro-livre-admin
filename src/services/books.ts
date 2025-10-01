@@ -27,9 +27,8 @@ export const getBook = async (
       releaseDate: book.releaseDate,
       cover: book.cover,
     };
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: unknown) {
+    console.log(error);
     return null;
   }
 };
