@@ -11,9 +11,9 @@ export const getBook = async (
     const bookDocRef = collection(db, "books");
     const q = query(
       bookDocRef,
-      where("title", "==", title.toLocaleLowerCase()),
-      where("author", "==", author.toLocaleLowerCase()),
-      where("publisher", "==", publisher.toLocaleLowerCase()),
+      where("title", "==", title.toLowerCase()),
+      where("author", "==", author.toLowerCase()),
+      where("publisher", "==", publisher.toLowerCase()),
     );
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
