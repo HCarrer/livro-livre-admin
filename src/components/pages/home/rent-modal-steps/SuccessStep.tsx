@@ -1,9 +1,11 @@
-import { HOME } from "@/constants/routes";
 import Button from "@/design-system/button";
 import { CircleCheckBig } from "lucide-react";
-import Link from "next/link";
 
-const SuccessStep = () => {
+interface SuccessStepProps {
+  handleDrawerClose: () => void;
+}
+
+const SuccessStep = ({ handleDrawerClose }: SuccessStepProps) => {
   return (
     <>
       <p className="text-f4 font-bold text-navy-blue w-full text-center">
@@ -19,13 +21,12 @@ const SuccessStep = () => {
           Cuide, leia e devolva. Assim mais pessoas também poderão aproveitar!
         </p>
       </div>
-      <Link href={HOME} className="w-full">
-        <Button
-          variant="secondary"
-          className="w-full mt-4"
-          label="Voltar para a página inicial"
-        />
-      </Link>
+      <Button
+        variant="secondary"
+        className="w-full mt-4"
+        label="Voltar para a página inicial"
+        onClick={handleDrawerClose}
+      />
     </>
   );
 };

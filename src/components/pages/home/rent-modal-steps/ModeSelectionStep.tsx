@@ -15,7 +15,7 @@ const ModeSelectionStep = ({ setStep }: RentModalStepProps) => {
         <Button
           variant="main"
           label="Abrir câmera"
-          onClick={() => setStep(STEPS.LOADING)}
+          onClick={() => setStep(STEPS.QR_CODE_SCANNING)}
         />
         <Button
           variant="outline"
