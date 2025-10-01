@@ -7,19 +7,34 @@ import {
   STEPS,
 } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
+import { getBook } from "@/services/books";
 import { useFormContext } from "react-hook-form";
+import { IBook } from "./BookConfirmationStep";
 
-const ManualFillingStep = ({ setStep }: RentModalStepProps) => {
+interface ManualFillingStepProps extends RentModalStepProps {
+  onSubmitData?: (data: IBook | null) => void;
+}
+
+const ManualFillingStep = ({
+  setStep,
+  onSubmitData,
+}: ManualFillingStepProps) => {
   const {
     formState: { isValid },
     handleSubmit,
   } = useFormContext<RentManualFillingProps>();
 
   const onSubmit = async (data: RentManualFillingProps) => {
-    console.log(data);
-    // TODO: integrar com backend
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setStep(STEPS.CONFIRMATION);
+    const { bookName, authorName, publisherName } = data;
+    let result;
+    try {
+      result = await getBook(bookName, authorName, publisherName);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
+      result = null;
+    }
+    onSubmitData?.(result);
+    setStep(result ? STEPS.CONFIRMATION : STEPS.BOOK_NOT_FOUND);
   };
 
   return (

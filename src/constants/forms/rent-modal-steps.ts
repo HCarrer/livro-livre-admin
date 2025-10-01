@@ -1,9 +1,11 @@
-export const STEPS = {
+export const STEPS: Record<string, number> = {
   MODE_SELECTION: 0,
-  MANUAL_FILLING: 1,
-  LOADING: 2,
-  CONFIRMATION: 3,
-  SUCCESS: 4,
+  QR_CODE_SCANNING: 1,
+  MANUAL_FILLING: 2,
+  BOOK_NOT_FOUND: 3,
+  LOADING: 4,
+  CONFIRMATION: 5,
+  SUCCESS: 6,
 };
 
 export interface RentModalStepProps {
