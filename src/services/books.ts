@@ -1,6 +1,13 @@
 import { db } from "+/authentication/firebase";
 import { IBook } from "@/components/pages/home/rent-modal-steps/BookConfirmationStep";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 export const getBookByFields = async (
   title: string,
@@ -35,13 +42,12 @@ export const getBookByFields = async (
 
 export const getBookById = async (docId: string): Promise<IBook | null> => {
   try {
-    const bookDocRef = collection(db, "books");
-    const q = query(bookDocRef, where("__name__", "==", docId));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
+    const bookDocRef = doc(db, "books", docId);
+    const querySnapshot = await getDoc(bookDocRef);
+    if (!querySnapshot.exists()) {
       return null;
     }
-    const book = querySnapshot.docs[0].data();
+    const book = querySnapshot.data();
     return {
       title: book.title,
       author: book.author,
