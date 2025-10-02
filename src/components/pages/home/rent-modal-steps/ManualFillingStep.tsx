@@ -21,13 +21,7 @@ const ManualFillingStep = ({
 
   const onSubmit = async (data: RentManualFillingProps) => {
     const { bookName, authorName, publisherName } = data;
-    let result;
-    try {
-      result = await getBookByFields(bookName, authorName, publisherName);
-    } catch (error) {
-      console.error(error);
-      result = null;
-    }
+    const result = await getBookByFields(bookName, authorName, publisherName);
     onSubmitData?.(result);
     setStep(result ? STEPS.CONFIRMATION : STEPS.BOOK_NOT_FOUND);
   };
