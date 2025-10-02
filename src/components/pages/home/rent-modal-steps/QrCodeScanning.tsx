@@ -11,6 +11,7 @@ const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
   const [isScanning, setIsScanning] = useState(false);
 
   const handleScan = async (content: IDetectedBarcode[]) => {
+    setErrorMessage(null);
     if (!content || !content.length) return;
     const { rawValue: bookDocId } = content[0];
     if (bookDocId) {
