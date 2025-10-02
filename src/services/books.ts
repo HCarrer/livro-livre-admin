@@ -35,7 +35,7 @@ export const getBookByFields = async (
       cover: book.cover,
     };
   } catch (error: unknown) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };
@@ -56,7 +56,7 @@ export const getBookById = async (docId: string): Promise<IBook | null> => {
       cover: book.cover,
     };
   } catch (error: unknown) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };

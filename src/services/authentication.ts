@@ -166,7 +166,7 @@ export const logout = async () => {
     await axios.post("/api/clear-auth");
     return { success: true, status: 200, toastId: "success" };
   } catch (error) {
-    console.log("Error signing out: ", error);
+    console.error("Error signing out: ", error);
     return { success: false, status: 500, toastId: "bad-request" };
   }
 };
