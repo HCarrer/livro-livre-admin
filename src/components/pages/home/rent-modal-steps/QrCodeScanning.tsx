@@ -14,13 +14,7 @@ const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
     if (!content || !content.length) return;
     const { rawValue: bookDocId } = content[0];
     if (bookDocId) {
-      let result;
-      try {
-        result = await getBookById(bookDocId);
-      } catch (error) {
-        console.error(error);
-        result = null;
-      }
+      const result = await getBookById(bookDocId);
       onSubmitData?.(result);
       setStep(result ? STEPS.CONFIRMATION : STEPS.BOOK_NOT_FOUND);
     } else {
