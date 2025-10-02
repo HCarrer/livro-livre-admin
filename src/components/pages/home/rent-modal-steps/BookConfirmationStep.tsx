@@ -1,7 +1,8 @@
-import { RentModalStepProps, STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
 import Image from "next/image";
 import Rating from "@/components/common/Rating";
+import { RentModalStepProps } from "@/interfaces/rentDrawer";
 
 export interface IBook {
   title: string;

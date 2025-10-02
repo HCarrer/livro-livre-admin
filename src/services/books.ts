@@ -1,8 +1,15 @@
 import { db } from "+/authentication/firebase";
 import { IBook } from "@/components/pages/home/rent-modal-steps/BookConfirmationStep";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
-export const getBook = async (
+export const getBookByFields = async (
   title: string,
   author: string,
   publisher: string,
@@ -28,7 +35,28 @@ export const getBook = async (
       cover: book.cover,
     };
   } catch (error: unknown) {
-    console.log(error);
+    console.error(error);
+    return null;
+  }
+};
+
+export const getBookById = async (docId: string): Promise<IBook | null> => {
+  try {
+    const bookDocRef = doc(db, "books", docId);
+    const querySnapshot = await getDoc(bookDocRef);
+    if (!querySnapshot.exists()) {
+      return null;
+    }
+    const book = querySnapshot.data();
+    return {
+      title: book.title,
+      author: book.author,
+      publisher: book.publisher,
+      releaseDate: book.releaseDate,
+      cover: book.cover,
+    };
+  } catch (error: unknown) {
+    console.error(error);
     return null;
   }
 };

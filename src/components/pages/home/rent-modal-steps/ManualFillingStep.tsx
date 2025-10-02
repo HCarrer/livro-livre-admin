@@ -1,19 +1,14 @@
 import AuthorName from "@/components/forms/pages/home/AuthorName";
 import BookName from "@/components/forms/pages/home/BookName";
 import PublisherName from "@/components/forms/pages/home/PublisherName";
-import {
-  RentManualFillingProps,
-  RentModalStepProps,
-  STEPS,
-} from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
-import { getBook } from "@/services/books";
+import {
+  ManualFillingStepProps,
+  RentManualFillingProps,
+} from "@/interfaces/rentDrawer";
+import { getBookByFields } from "@/services/books";
 import { useFormContext } from "react-hook-form";
-import { IBook } from "./BookConfirmationStep";
-
-interface ManualFillingStepProps extends RentModalStepProps {
-  onSubmitData?: (data: IBook | null) => void;
-}
 
 const ManualFillingStep = ({
   setStep,
@@ -26,13 +21,7 @@ const ManualFillingStep = ({
 
   const onSubmit = async (data: RentManualFillingProps) => {
     const { bookName, authorName, publisherName } = data;
-    let result;
-    try {
-      result = await getBook(bookName, authorName, publisherName);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_error) {
-      result = null;
-    }
+    const result = await getBookByFields(bookName, authorName, publisherName);
     onSubmitData?.(result);
     setStep(result ? STEPS.CONFIRMATION : STEPS.BOOK_NOT_FOUND);
   };
