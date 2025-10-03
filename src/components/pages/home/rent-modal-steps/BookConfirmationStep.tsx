@@ -3,6 +3,8 @@ import Button from "@/design-system/button";
 import Image from "next/image";
 import Rating from "@/components/common/Rating";
 import { RentModalStepProps } from "@/interfaces/rentDrawer";
+import { useCallback } from "react";
+import { rentBook } from "@/services/rent";
 
 export interface IBook {
   title: string;
@@ -13,7 +15,7 @@ export interface IBook {
 }
 
 interface BookConfirmationProps extends RentModalStepProps {
-  book?: IBook;
+  book: IBook;
 }
 
 const upperCaseFirstLetter = (str?: string) => {
@@ -24,6 +26,13 @@ const upperCaseFirstLetter = (str?: string) => {
 };
 
 const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
+  const handleRentClick = useCallback(async () => {
+    const { success, status } = await rentBook(book);
+    // TODO: implementar tratativa de devolucao pendente (401)
+    console.log(status);
+    // setStep(STEPS.SUCCESS);
+  }, [book]);
+
   return (
     <>
       <div className="flex flex-col gap-y-1">
@@ -75,11 +84,7 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
           label="É outro livro"
           onClick={() => setStep(STEPS.MANUAL_FILLING)}
         />
-        <Button
-          variant="main"
-          label="Alugar"
-          onClick={() => setStep(STEPS.SUCCESS)}
-        />
+        <Button variant="main" label="Alugar" onClick={handleRentClick} />
       </div>
     </>
   );
