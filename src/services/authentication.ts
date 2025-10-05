@@ -16,6 +16,7 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   setDoc,
   where,
 } from "firebase/firestore";
@@ -38,10 +39,10 @@ export const loginWithGoogle = async (): Promise<{
           email: user.email,
           name: user.displayName,
           profilePicture: user.photoURL,
-          createdAt: new Date(),
+          createdAt: serverTimestamp(),
           token: token,
           hasClosedWelcomeBanner: false,
-          updatedAt: new Date(),
+          updatedAt: serverTimestamp(),
           // Adicione outros campos padrão conforme necessário
         });
       }
@@ -137,10 +138,10 @@ export const createAccount = async (
           email: email,
           name: username,
           profilePicture: "",
-          createdAt: new Date(),
+          createdAt: serverTimestamp(),
           token: token,
           hasClosedWelcomeBanner: false,
-          updatedAt: new Date(),
+          updatedAt: serverTimestamp(),
         });
       }
     }
