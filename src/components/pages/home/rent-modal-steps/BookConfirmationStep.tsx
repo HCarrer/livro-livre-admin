@@ -5,14 +5,7 @@ import Rating from "@/components/common/Rating";
 import { RentModalStepProps } from "@/interfaces/rentDrawer";
 import { useCallback } from "react";
 import { rentBook } from "@/services/rent";
-
-export interface IBook {
-  title: string;
-  author: string;
-  publisher: string;
-  releaseDate: number;
-  cover: string;
-}
+import { IBook } from "@/interfaces/fireStore";
 
 interface BookConfirmationProps extends RentModalStepProps {
   book: IBook;
@@ -27,9 +20,14 @@ const upperCaseFirstLetter = (str?: string) => {
 
 const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
   const handleRentClick = useCallback(async () => {
-    const { success, status } = await rentBook(book);
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const coords = position.coords;
+      const { success, status, message } = await rentBook(book, coords);
+      // TODO: implementar tratativa de devolucao pendente (401)
+    });
+    // const { success, status } = await rentBook(book);
     // TODO: implementar tratativa de devolucao pendente (401)
-    console.log(status);
+    // console.log(status);
     // setStep(STEPS.SUCCESS);
   }, [book]);
 
