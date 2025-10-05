@@ -1,5 +1,5 @@
 import { db } from "+/authentication/firebase";
-import { IBookShef } from "@/interfaces/fireStore";
+import { IBookShelf } from "@/interfaces/fireStore";
 import { collection, getDocs } from "firebase/firestore";
 
 export const getDistanceInMeters = (
@@ -25,7 +25,7 @@ export const getDistanceInMeters = (
 export const getNearestShelf = async (
   userLat: number,
   userLng: number,
-): Promise<(IBookShef & { id: string; distance: number }) | null> => {
+): Promise<(IBookShelf & { id: string; distance: number }) | null> => {
   const shelvesRef = collection(db, "bookshelves");
   const snapshot = await getDocs(shelvesRef);
 

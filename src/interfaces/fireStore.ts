@@ -18,7 +18,7 @@ export interface IBook {
   cover: string;
 }
 
-export interface IBookShef {
+export interface IBookShelf {
   alias: string;
   creationDate: Timestamp;
   location: GeolocationCoordinates;

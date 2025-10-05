@@ -11,14 +11,14 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Bell, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { auth, db } from "+/authentication/firebase";
-import { User } from "@/interfaces/user";
+import { IUser } from "@/interfaces/fireStore";
 import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { PROFILE } from "@/constants/routes";
 
 const Home = () => {
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Home = () => {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
-          const data = userDocSnapshot.data() as User;
+          const data = userDocSnapshot.data() as IUser;
           setUserData(data);
         }
       }

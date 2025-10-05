@@ -1,6 +1,7 @@
 import { auth, db } from "+/authentication/firebase";
 import { SIGN_UP_TOAST_DICT } from "@/constants/forms/cadastro";
 import { LOGIN_TOAST_DICT } from "@/constants/forms/login";
+import { IUser } from "@/interfaces/fireStore";
 import axios from "axios";
 import { FirebaseError } from "firebase/app";
 import {
@@ -35,7 +36,7 @@ export const loginWithGoogle = async (): Promise<{
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnapshot = await getDoc(userDocRef);
       if (!userDocSnapshot.exists()) {
-        await setDoc(userDocRef, {
+        const userData: IUser = {
           email: user.email,
           name: user.displayName,
           profilePicture: user.photoURL,
@@ -43,8 +44,8 @@ export const loginWithGoogle = async (): Promise<{
           token: token,
           hasClosedWelcomeBanner: false,
           updatedAt: serverTimestamp(),
-          // Adicione outros campos padrão conforme necessário
-        });
+        };
+        await setDoc(userDocRef, userData);
       }
     }
     await axios.post("/api/session", { token: token });
@@ -134,7 +135,7 @@ export const createAccount = async (
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnapshot = await getDoc(userDocRef);
       if (!userDocSnapshot.exists()) {
-        await setDoc(userDocRef, {
+        const userData: IUser = {
           email: email,
           name: username,
           profilePicture: "",
@@ -142,7 +143,8 @@ export const createAccount = async (
           token: token,
           hasClosedWelcomeBanner: false,
           updatedAt: serverTimestamp(),
-        });
+        };
+        await setDoc(userDocRef, userData);
       }
     }
     await axios.post("/api/session", { token: token });
