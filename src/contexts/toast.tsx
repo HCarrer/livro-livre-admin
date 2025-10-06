@@ -30,12 +30,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   ) => {
     setToast({ content, type, duration });
     // resetta o toast depois de (duration + 1)s por garantir que ele desapareceu
-    setTimeout(
+    const timer = setTimeout(
       () => {
         setToast(null);
       },
       (duration + 1) * 1000,
     );
+    return () => clearTimeout(timer);
   };
 
   return (
