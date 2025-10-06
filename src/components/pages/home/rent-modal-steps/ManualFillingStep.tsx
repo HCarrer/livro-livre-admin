@@ -23,7 +23,14 @@ const ManualFillingStep = ({
     const { bookName, authorName, publisherName } = data;
     const result = await getBookByFields(bookName, authorName, publisherName);
     onSubmitData?.(result);
-    setStep(result ? STEPS.CONFIRMATION : STEPS.BOOK_NOT_FOUND);
+    if (result) {
+      setStep(STEPS.CONFIRMATION);
+    } else {
+      setStep(
+        STEPS.BOOK_NOT_FOUND,
+        "Garanta que os dados foram preenchidos exatamente como constam no livro",
+      );
+    }
   };
 
   return (

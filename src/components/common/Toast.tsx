@@ -9,12 +9,12 @@ export interface ToastProps {
 }
 
 const toastVariants = cva(
-  "fixed top-5 z-50 px-2 py-1 rounded border-b-2 border-l-2 font-normal text-f5 flex gap-x-4 max-w-2/3 items-center transition-all duration-300 ease-in-out",
+  "fixed top-5 z-60 px-2 py-1 rounded border-b-2 border-l-2 font-normal text-f5 flex gap-x-4 max-w-2/3 items-center transition-all duration-300 ease-in-out",
   {
     variants: {
       type: {
         success: "bg-power-blue/60 text-white border-power-blue",
-        error: "bg-error-red/60 text-white border-error-red",
+        error: "bg-error-red-dark text-white border-error-red",
         warning: "bg-disabled-blue text-black border-power-blue",
       },
       fullyOnView: {

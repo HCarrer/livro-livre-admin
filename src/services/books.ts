@@ -1,5 +1,5 @@
 import { db } from "+/authentication/firebase";
-import { IBook } from "@/components/pages/home/rent-modal-steps/BookConfirmationStep";
+import { IBook } from "@/interfaces/fireStore";
 import {
   collection,
   doc,

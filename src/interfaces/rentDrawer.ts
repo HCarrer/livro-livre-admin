@@ -1,7 +1,7 @@
-import { IBook } from "@/components/pages/home/rent-modal-steps/BookConfirmationStep";
+import { IBook } from "./fireStore";
 
 export interface RentModalStepProps {
-  setStep: (step: number) => void;
+  setStep: (step: number, feedback?: string) => void;
 }
 
 export interface RentManualFillingProps {

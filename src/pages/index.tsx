@@ -11,14 +11,14 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Bell, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { auth, db } from "+/authentication/firebase";
-import { User } from "@/interfaces/user";
+import { IUser } from "@/interfaces/fireStore";
 import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { PROFILE } from "@/constants/routes";
 
 const Home = () => {
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Home = () => {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
-          const data = userDocSnapshot.data() as User;
+          const data = userDocSnapshot.data() as IUser;
           setUserData(data);
         }
       }
@@ -86,7 +86,7 @@ const Home = () => {
         </div>
         {!userData?.hasClosedWelcomeBanner ? <WelcomeBanner /> : null}
         <UserScore booksRead={10} booksToReturn={5} />
-        <div className="w-full flex flex-col gap-y-4 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
+        <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
           {/* TODO: deixar botoes funcionais */}
           <RentComponent />
           <Button

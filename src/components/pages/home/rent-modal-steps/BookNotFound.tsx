@@ -1,14 +1,20 @@
-import { RentModalStepProps, STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
+import { RentModalStepProps } from "@/interfaces/rentDrawer";
 
-const BookNotFound = ({ setStep }: RentModalStepProps) => {
+interface BookNotFoundProps extends RentModalStepProps {
+  feedback?: string;
+}
+
+const BookNotFound = ({ setStep, feedback }: BookNotFoundProps) => {
   return (
     <>
       <p className="text-f3 font-bold text-navy-blue w-full text-center">
         Ops! Não conseguimos encontrar este livro
       </p>
       <p className="text-f5 text-navy-blue text-center font-medium">
-        Garanta que os dados foram preenchidos exatamente como constam no livro
+        {feedback ||
+          "Tente escanear o QR Code novamente ou preencha os dados manualmente"}
       </p>
       <div className="flex flex-col gap-y-2">
         <Button

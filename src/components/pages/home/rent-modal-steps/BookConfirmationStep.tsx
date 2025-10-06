@@ -3,17 +3,12 @@ import Button from "@/design-system/button";
 import Image from "next/image";
 import Rating from "@/components/common/Rating";
 import { RentModalStepProps } from "@/interfaces/rentDrawer";
-
-export interface IBook {
-  title: string;
-  author: string;
-  publisher: string;
-  releaseDate: number;
-  cover: string;
-}
+import { useCallback } from "react";
+import { rentBook } from "@/services/rent";
+import { IBook } from "@/interfaces/fireStore";
 
 interface BookConfirmationProps extends RentModalStepProps {
-  book?: IBook;
+  book: IBook;
 }
 
 const upperCaseFirstLetter = (str?: string) => {
@@ -24,6 +19,35 @@ const upperCaseFirstLetter = (str?: string) => {
 };
 
 const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
+  const handleRentClick = useCallback(async () => {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const coords = position.coords;
+        const { success, status, message } = await rentBook(book, coords);
+        if (success) {
+          setStep(STEPS.SUCCESS);
+        } else {
+          if (status === 409) {
+            setStep(
+              STEPS.ERROR,
+              "Parece que você já alugou esse livro! Devolva-o para poder alugar novamente",
+            );
+          } else {
+            setStep(STEPS.ERROR);
+            console.error(message);
+          }
+        }
+      },
+      (error) => {
+        setStep(
+          STEPS.ERROR,
+          "Não foi possível acessar sua localização. Por favor, permita o acesso à localização para alugar o livro."
+        );
+        console.error("Geolocation error:", error);
+      }
+    );
+  }, [book]);
+
   return (
     <>
       <div className="flex flex-col gap-y-1">
@@ -75,11 +99,7 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
           label="É outro livro"
           onClick={() => setStep(STEPS.MANUAL_FILLING)}
         />
-        <Button
-          variant="main"
-          label="Alugar"
-          onClick={() => setStep(STEPS.SUCCESS)}
-        />
+        <Button variant="main" label="Alugar" onClick={handleRentClick} />
       </div>
     </>
   );

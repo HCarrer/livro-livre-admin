@@ -16,7 +16,11 @@ export const SignUpFormDefaultValues = {
 
 export const SIGN_UP_TOAST_DICT: Record<
   string,
-  { type: ToastProps["type"]; content: ToastProps["content"] }
+  {
+    type: ToastProps["type"];
+    content: ToastProps["content"];
+    duration?: ToastProps["duration"];
+  }
 > = {
   ["email-unavailable"]: {
     content: "E-mail indisponível.",

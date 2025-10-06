@@ -3,7 +3,7 @@ import NavBar from "@/components/common/NavBar";
 import Skeleton from "@/components/common/Skeleton";
 import { LOGOUT } from "@/constants/routes";
 import Button from "@/design-system/button";
-import { User } from "@/interfaces/user";
+import { IUser } from "@/interfaces/fireStore";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { LoaderIcon } from "lucide-react";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const ProfilePage = () => {
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ProfilePage = () => {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
-          const data = userDocSnapshot.data() as User;
+          const data = userDocSnapshot.data() as IUser;
           setUserData(data);
         }
       }

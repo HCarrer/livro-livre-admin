@@ -9,14 +9,14 @@ import { useEffect, useMemo, useState } from "react";
 import ModeSelectionStep from "./rent-modal-steps/ModeSelectionStep";
 import ManualFillingStep from "./rent-modal-steps/ManualFillingStep";
 import LoadingStep from "./rent-modal-steps/LoadingStep";
-import BookConfirmation, {
-  IBook,
-} from "./rent-modal-steps/BookConfirmationStep";
+import BookConfirmation from "./rent-modal-steps/BookConfirmationStep";
 import SuccessStep from "./rent-modal-steps/SuccessStep";
 import { FormProvider, useForm } from "react-hook-form";
 import BookNotFound from "./rent-modal-steps/BookNotFound";
 import QrCodeScanning from "./rent-modal-steps/QrCodeScanning";
 import { RentManualFillingProps } from "@/interfaces/rentDrawer";
+import { IBook } from "@/interfaces/fireStore";
+import ErrorStep from "./rent-modal-steps/ErrorStep";
 
 const RentComponent = () => {
   const [foundBook, setFoundBook] = useState<IBook | undefined>(undefined);
@@ -32,6 +32,7 @@ const RentComponent = () => {
   } = methods;
 
   const [step, setStep] = useState(STEPS.MODE_SELECTION);
+  const [feedback, setFeedback] = useState<string | undefined>(undefined);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -51,31 +52,51 @@ const RentComponent = () => {
     methods.reset(RENT_MODAL_DEFAULT_VALUES);
   };
 
+  const handleStepChange = (newStep: number, feedback?: string) => {
+    setStep(newStep);
+    setFeedback(feedback);
+  };
+
   const StepComponent = useMemo(() => {
     switch (step) {
       case STEPS.MODE_SELECTION:
-        return <ModeSelectionStep setStep={setStep} />;
+        return <ModeSelectionStep setStep={handleStepChange} />;
       case STEPS.QR_CODE_SCANNING:
         return (
-          <QrCodeScanning setStep={setStep} onSubmitData={handleBookSearch} />
+          <QrCodeScanning
+            setStep={handleStepChange}
+            onSubmitData={handleBookSearch}
+          />
         );
       case STEPS.LOADING:
         return <LoadingStep />;
       case STEPS.MANUAL_FILLING:
         return (
           <ManualFillingStep
-            setStep={setStep}
+            setStep={handleStepChange}
             onSubmitData={handleBookSearch}
           />
         );
       case STEPS.BOOK_NOT_FOUND:
-        return <BookNotFound setStep={setStep} />;
+        return <BookNotFound feedback={feedback} setStep={handleStepChange} />;
       case STEPS.CONFIRMATION:
-        return <BookConfirmation setStep={setStep} book={foundBook} />;
+        return foundBook ? (
+          <BookConfirmation setStep={handleStepChange} book={foundBook} />
+        ) : (
+          <BookNotFound feedback={feedback} setStep={handleStepChange} />
+        );
       case STEPS.SUCCESS:
         return <SuccessStep handleDrawerClose={closeDrawer} />;
+      case STEPS.ERROR:
+        return (
+          <ErrorStep
+            setStep={handleStepChange}
+            handleDrawerClose={closeDrawer}
+            feedback={feedback}
+          />
+        );
       default:
-        return <ModeSelectionStep setStep={setStep} />;
+        return <ModeSelectionStep setStep={handleStepChange} />;
     }
   }, [step]);
 
