@@ -5,8 +5,6 @@ import UserScore from "@/components/common/UserScore";
 import WelcomeBanner from "@/components/common/WelcomeBanner";
 import RentComponent from "@/components/pages/home/RentComponent";
 import { ACCORDIONS } from "@/constants/accordions";
-import { RETURN_BUTTON_LABEL } from "@/constants/common";
-import Button from "@/design-system/button";
 import { onAuthStateChanged } from "firebase/auth";
 import { Bell, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
