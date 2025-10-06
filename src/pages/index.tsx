@@ -86,7 +86,7 @@ const Home = () => {
         </div>
         {!userData?.hasClosedWelcomeBanner ? <WelcomeBanner /> : null}
         <UserScore booksRead={10} booksToReturn={5} />
-        <div className="w-full flex flex-col gap-y-4 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
+        <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
           {/* TODO: deixar botoes funcionais */}
           <RentComponent />
           <Button
