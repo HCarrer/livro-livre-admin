@@ -39,7 +39,7 @@ const PendingReturnBooks = ({
     if (!chosenBook) return;
     handleBookConfirmation(books.find((book) => book.rentId === chosenBook));
     setStep(STEPS.SHELF_QR_CODE_SCANNING);
-  }, []);
+  }, [chosenBook]);
 
   const choosePrev = () => {
     const currentIndex = books.findIndex((book) => book.rentId === chosenBook);
