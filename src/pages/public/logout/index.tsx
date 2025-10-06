@@ -1,7 +1,6 @@
 "use client";
 
 import Skeleton from "@/components/common/Skeleton";
-import Toast from "@/components/common/Toast";
 import { LOGOUT_TOAST_DICT } from "@/constants/forms/logout";
 import { BOOLEAN_QUERY, LOGIN } from "@/constants/routes";
 import { useToast } from "@/contexts/toast";

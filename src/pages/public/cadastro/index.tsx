@@ -16,7 +16,6 @@ import Username from "@/components/forms/pages/cadastro/Username";
 import Password from "@/components/forms/pages/cadastro/Password";
 import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConfirmation";
 import { EMAIL_REGEX } from "@/constants/forms/common";
-import Toast from "@/components/common/Toast";
 import { createAccount } from "@/services/authentication";
 import { useToast } from "@/contexts/toast";
 
