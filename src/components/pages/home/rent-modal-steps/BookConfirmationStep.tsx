@@ -10,9 +10,14 @@ import { upperCaseFirstLetter } from "@/helpers/text";
 
 interface BookConfirmationProps extends ModalStepProps {
   book: IBook;
+  onSuccess?: () => void;
 }
 
-const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
+const BookConfirmation = ({
+  setStep,
+  book,
+  onSuccess,
+}: BookConfirmationProps) => {
   const handleRentClick = useCallback(async () => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -20,6 +25,7 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
         const { success, status, message } = await rentBook(book, coords);
         if (success) {
           setStep(STEPS.SUCCESS);
+          onSuccess?.();
         } else {
           if (status === 409) {
             setStep(

@@ -152,7 +152,7 @@ const PendingReturnBooks = ({
       ) : null}
       <Button
         variant="main"
-        label="Devolver"
+        label="Selecionar"
         disabled={!chosenBook}
         onClick={confirmBook}
       />

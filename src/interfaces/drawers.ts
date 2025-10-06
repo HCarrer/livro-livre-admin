@@ -17,4 +17,5 @@ export interface ManualFillingStepProps extends ModalStepProps {
 
 export interface DrawerButtonProps {
   facets?: IRentHistoryFacets;
+  onSuccess?: () => void;
 }

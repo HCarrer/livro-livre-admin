@@ -29,7 +29,7 @@ export const getNearestShelf = async (
   const shelvesRef = collection(db, "bookshelves");
   const snapshot = await getDocs(shelvesRef);
 
-  let nearest = null;
+  let nearest: (IBookShelf & { id: string; distance: number }) | null = null;
   let minDistance = Infinity; // distancia minima para o match em metros (mudar depois)
 
   snapshot.forEach((doc) => {
@@ -44,7 +44,13 @@ export const getNearestShelf = async (
 
       if (dist < minDistance) {
         minDistance = dist;
-        nearest = { id: doc.id, ...data, distance: dist };
+        nearest = {
+          alias: data.alias,
+          location: data.location,
+          creationDate: data.creationDate,
+          id: doc.id,
+          distance: dist,
+        };
       }
     }
   });

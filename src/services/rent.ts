@@ -1,7 +1,7 @@
 import { auth, db } from "+/authentication/firebase";
 import { getNearestShelf } from "@/helpers/geoLocation";
 import { IRentHistoryFacets } from "@/interfaces/facets";
-import { IBook, IRent } from "@/interfaces/fireStore";
+import { IBook, IBookShelf, IRent } from "@/interfaces/fireStore";
 import {
   collection,
   doc,
@@ -186,6 +186,89 @@ export const listPendingReturns = async (): Promise<{
       success: false,
       status: 500,
       books: [],
+    };
+  }
+};
+
+export const returnBook = async (
+  book: IBook,
+  shelf: IBookShelf,
+): Promise<{ success: boolean; status: number; message: string }> => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email)
+      return {
+        success: false,
+        status: 401,
+        message: "User not authenticated",
+      };
+
+    const bookDocRef = collection(db, "books");
+    const q = query(
+      bookDocRef,
+      where("title", "==", book.title.toLowerCase()),
+      where("author", "==", book.author.toLowerCase()),
+      where("publisher", "==", book.publisher.toLowerCase()),
+    );
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty)
+      return { success: false, status: 404, message: "Book not found" };
+
+    const foundBook = querySnapshot.docs[0];
+    const bookId = foundBook.id;
+
+    const bookshelvesDocRef = collection(db, "bookshelves");
+    const bookshelvesQuery = query(
+      bookshelvesDocRef,
+      where("alias", "==", shelf.alias),
+      where("creationDate", "==", shelf.creationDate),
+      where("location", "==", shelf.location),
+    );
+    const bookshelvesQuerySnapshot = await getDocs(bookshelvesQuery);
+    if (bookshelvesQuerySnapshot.empty)
+      return { success: false, status: 404, message: "Bookshelf not found" };
+
+    const foundShelf = bookshelvesQuerySnapshot.docs[0];
+    const shelfId = foundShelf.id;
+
+    const rentCollection = collection(db, "rents");
+    const rentQuery = query(
+      rentCollection,
+      where("status", "==", "pendingReturn"),
+      where("user", "==", user.email),
+      where("book", "==", bookId),
+      where("bookName", "==", book.title),
+    );
+    const rentQueryResult = await getDocs(rentQuery);
+    if (rentQueryResult.empty)
+      return {
+        success: false,
+        status: 404,
+        message: "No pending rent found for this book and user",
+      };
+
+    const rentDoc = rentQueryResult.docs[0];
+    const rentDocRef = doc(db, "rents", rentDoc.id);
+    await setDoc(
+      rentDocRef,
+      {
+        returnedAt: serverTimestamp(),
+        returnShelf: shelfId,
+        status: "returned",
+      },
+      { merge: true },
+    );
+
+    return {
+      success: true,
+      status: 200,
+      message: "Book returned successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      status: 500,
+      message: `An unexpected error occurred while returning the book: ${error}`,
     };
   }
 };

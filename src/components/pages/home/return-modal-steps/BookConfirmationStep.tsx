@@ -73,7 +73,7 @@ const BookConfirmation = ({
           label="É outro livro"
           onClick={() => setStep(STEPS.PENDING_RETURN_LISTING)}
         />
-        <Button variant="main" label="Devolver" onClick={handleReturnClick} />
+        <Button variant="main" label="Selecionar" onClick={handleReturnClick} />
       </div>
     </>
   );

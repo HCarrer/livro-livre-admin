@@ -12,24 +12,23 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // TODO: rever calculo
   const userRating = useMemo(() => {
     const total = booksToReturn + booksRead;
     if (total === 0) {
       return 0;
     }
-    return 5 * (1 - booksToReturn / total);
+    return booksRead / total;
   }, [booksRead, booksToReturn]);
 
   useLayoutEffect(() => {
-    const rating = Math.floor(userRating) >= 5 ? 5 : Math.floor(userRating);
-    const fillPctg = (rating * 100) / 5;
+    const fillPctg = userRating * 100;
     setProgressBarWidth(`${fillPctg}%`);
   }, [ref.current, userRating]);
 
   const ratingBarColor = useMemo(() => {
-    if (userRating <= 2) return "var(--error-red)";
-    if (userRating <= 4) return "var(--warning-yellow)";
+    const rating = userRating * 100;
+    if (rating <= 40) return "var(--error-red)";
+    if (rating <= 80) return "var(--warning-yellow)";
     return "var(--power-blue)";
   }, [userRating]);
 

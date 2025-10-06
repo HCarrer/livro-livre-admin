@@ -22,7 +22,7 @@ import {
 import { IBook } from "@/interfaces/fireStore";
 import ErrorStep from "./rent-modal-steps/ErrorStep";
 
-const RentComponent = ({ facets }: DrawerButtonProps) => {
+const RentComponent = ({ facets, onSuccess }: DrawerButtonProps) => {
   const [foundBook, setFoundBook] = useState<IBook | undefined>(undefined);
 
   const methods = useForm<RentManualFillingProps>({
@@ -85,7 +85,11 @@ const RentComponent = ({ facets }: DrawerButtonProps) => {
         return <BookNotFound feedback={feedback} setStep={handleStepChange} />;
       case STEPS.CONFIRMATION:
         return foundBook ? (
-          <BookConfirmation setStep={handleStepChange} book={foundBook} />
+          <BookConfirmation
+            setStep={handleStepChange}
+            book={foundBook}
+            onSuccess={onSuccess}
+          />
         ) : (
           <BookNotFound feedback={feedback} setStep={handleStepChange} />
         );

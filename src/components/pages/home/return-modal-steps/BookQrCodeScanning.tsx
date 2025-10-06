@@ -6,7 +6,10 @@ import { getBookById } from "@/services/books";
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
 
-const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
+const BookQrCodeScanning = ({
+  setStep,
+  onSubmitData,
+}: ManualFillingStepProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
 
@@ -67,4 +70,4 @@ const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
   );
 };
 
-export default QrCodeScanning;
+export default BookQrCodeScanning;

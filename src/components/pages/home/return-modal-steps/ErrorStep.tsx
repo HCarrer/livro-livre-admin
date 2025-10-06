@@ -21,7 +21,7 @@ const ErrorStep = ({
       <div className="flex flex-col gap-y-4">
         <p className="text-f5 text-navy-blue text-center font-medium">
           {feedback ||
-            "Ocorreu um erro ao alugar este livro. Tente novamente em instantes"}
+            "Ocorreu um erro ao devolver este livro. Tente novamente em instantes"}
         </p>
         <CircleX className="mx-auto text-error-red" size={120} />
       </div>

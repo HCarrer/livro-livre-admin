@@ -13,13 +13,10 @@ const SuccessStep = ({ handleDrawerClose }: SuccessStepProps) => {
       </p>
       <div className="flex flex-col gap-y-4">
         <p className="text-f5 text-navy-blue text-center font-medium">
-          Curta este livro como se fosse seu mas não se esqueça:{" "}
-          <span className="text-power-blue font-semibold">ele não é!</span>
+          Obrigado por participar do Livro Livre! Esperamos que tenha gostado da
+          leitura.
         </p>
         <CircleCheckBig className="mx-auto text-power-blue" size={120} />
-        <p className="text-f6 text-navy-blue text-center font-medium">
-          Cuide, leia e devolva. Assim mais pessoas também poderão aproveitar!
-        </p>
       </div>
       <Button
         variant="secondary"

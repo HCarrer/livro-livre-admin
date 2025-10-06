@@ -60,6 +60,10 @@ const Home = () => {
     getHistoryFacets();
   }, [userData]);
 
+  const onSuccess = () => {
+    getHistoryFacets();
+  };
+
   if (loading)
     return (
       <Skeleton position="top">
@@ -114,8 +118,8 @@ const Home = () => {
         />
         <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
           {/* TODO: deixar botoes funcionais aqui */}
-          <RentComponent facets={facets} />
-          <ReturnComponent facets={facets} />
+          <RentComponent facets={facets} onSuccess={onSuccess} />
+          <ReturnComponent facets={facets} onSuccess={onSuccess} />
         </div>
         <div className="flex flex-col gap-6">
           {ACCORDIONS.map((item, index) => (
