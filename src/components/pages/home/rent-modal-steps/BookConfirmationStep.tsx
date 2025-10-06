@@ -20,23 +20,32 @@ const upperCaseFirstLetter = (str?: string) => {
 
 const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
   const handleRentClick = useCallback(async () => {
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const coords = position.coords;
-      const { success, status, message } = await rentBook(book, coords);
-      if (success) {
-        setStep(STEPS.SUCCESS);
-      } else {
-        if (status === 409) {
-          setStep(
-            STEPS.ERROR,
-            "Parece que você já alugou esse livro! Devolva-o para poder alugar novamente",
-          );
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const coords = position.coords;
+        const { success, status, message } = await rentBook(book, coords);
+        if (success) {
+          setStep(STEPS.SUCCESS);
         } else {
-          setStep(STEPS.ERROR);
-          console.error(message);
+          if (status === 409) {
+            setStep(
+              STEPS.ERROR,
+              "Parece que você já alugou esse livro! Devolva-o para poder alugar novamente",
+            );
+          } else {
+            setStep(STEPS.ERROR);
+            console.error(message);
+          }
         }
+      },
+      (error) => {
+        setStep(
+          STEPS.ERROR,
+          "Não foi possível acessar sua localização. Por favor, permita o acesso à localização para alugar o livro."
+        );
+        console.error("Geolocation error:", error);
       }
-    });
+    );
   }, [book]);
 
   return (
