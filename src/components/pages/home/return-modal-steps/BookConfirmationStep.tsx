@@ -46,10 +46,11 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
     <>
       <div className="flex flex-col gap-y-1">
         <p className="text-f4 font-bold text-navy-blue w-full text-start">
-          Quase lá!
+          É este o seu livro?
         </p>
         <p className="text-f6 text-navy-blue text-start font-medium">
-          Confirme o livro encontrado
+          Se não for, não se preocupe! Você ainda pode selecionar manualmente
+          qual livro deseja devolver.
         </p>
       </div>
       <div className="flex gap-x-2.5 p-3 bg-soft-blue rounded-md">
@@ -91,7 +92,7 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
         <Button
           variant="outline"
           label="É outro livro"
-          onClick={() => setStep(STEPS.MANUAL_FILLING)}
+          onClick={() => setStep(STEPS.PENDING_RETURN_LISTING)}
         />
         <Button variant="main" label="Alugar" onClick={handleRentClick} />
       </div>

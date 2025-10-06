@@ -10,6 +10,7 @@ import {
   setDoc,
   where,
   serverTimestamp,
+  getDoc,
 } from "firebase/firestore";
 
 export const rentBook = async (
@@ -120,6 +121,67 @@ export const getRentHistoryFacets = async (): Promise<{
       success: false,
       status: 500,
       facets: { total: 0, pending: 0, returned: 0, score: 0 },
+    };
+  }
+};
+
+export const listPendingReturns = async (): Promise<{
+  success: boolean;
+  status: number;
+  books: (IBook & { rentId: string })[];
+}> => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email)
+      return {
+        success: false,
+        status: 401,
+        books: [],
+      };
+
+    const rentCollection = collection(db, "rents");
+    const rentQuery = query(rentCollection, where("user", "==", user.email));
+    const rentQueryResult = await getDocs(rentQuery);
+    const pendingRentDocs = rentQueryResult.docs.filter(
+      (docSnapshot) => docSnapshot.data().status === "pendingReturn",
+    );
+
+    // 3) For each pending rent, fetch the corresponding book document
+    const pendingBooks: (IBook & { rentId: string })[] = [];
+
+    for (const rentDoc of pendingRentDocs) {
+      const rentData = rentDoc.data();
+
+      // rentData.book contains the ID of the matching book doc
+      const bookId = rentData.book;
+      if (!bookId) continue;
+
+      // rentId here is the ID of the rent doc itself
+      const rentId = rentDoc.id;
+
+      const bookRef = doc(db, "books", bookId);
+      const bookSnap = await getDoc(bookRef);
+
+      if (bookSnap.exists()) {
+        const bookData = bookSnap.data() as IBook;
+        pendingBooks.push({
+          ...bookData,
+          rentId,
+        });
+      }
+    }
+
+    return {
+      success: true,
+      status: 200,
+      books: pendingBooks,
+    };
+  } catch (error) {
+    console.error("Error fetching rent history facets:", error);
+    return {
+      success: false,
+      status: 500,
+      books: [],
     };
   }
 };
