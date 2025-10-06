@@ -40,6 +40,7 @@ const Home = () => {
           setUserData(data);
         }
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -54,7 +55,6 @@ const Home = () => {
         "error",
       );
     }
-    setLoading(false);
   };
 
   useEffect(() => {
