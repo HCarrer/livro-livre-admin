@@ -23,11 +23,15 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     duration: ToastProps["duration"];
   } | null>(null);
 
+  const toastTimer: ReturnType<typeof setTimeout> | null = null;
+
   const showToast = (
     content: ToastProps["content"],
     type: ToastProps["type"] = "success",
     duration: ToastProps["duration"] = 5,
   ) => {
+    // limpa o timer anterior se existir
+    if (toastTimer) clearTimeout(toastTimer);
     setToast({ content, type, duration });
     // resetta o toast depois de (duration + 1)s por garantir que ele desapareceu
     const timer = setTimeout(
