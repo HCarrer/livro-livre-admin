@@ -55,7 +55,7 @@ export const rentBook = async (
     );
 
     if (!nearestShelf)
-      return { success: false, status: 404, message: "Internal server error" };
+      return { success: false, status: 404, message: "No shelf found near the provided location" };
 
     const rentDocRef = doc(rentCollection);
     const rentData: IRent = {
