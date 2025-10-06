@@ -26,7 +26,6 @@ const PendingReturnBooks = ({
 
   const listPendingBooks = useCallback(async () => {
     const { success, books } = await listPendingReturns();
-    console.log(books);
     if (success) {
       setBooks(books);
     }
@@ -45,7 +44,6 @@ const PendingReturnBooks = ({
   const choosePrev = () => {
     const currentIndex = books.findIndex((book) => book.rentId === chosenBook);
     if (currentIndex > 0) {
-      console.log(document.getElementById(`book-${currentIndex - 1}`));
       setChosenBook(books[currentIndex - 1].rentId);
     }
   };
