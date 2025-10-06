@@ -15,14 +15,21 @@ import PendingReturnBooks from "./return-modal-steps/PendingReturnBooks";
 
 const ReturnComponent = ({ facets }: DrawerButtonProps) => {
   const [foundBook, setFoundBook] = useState<IBook | undefined>(undefined);
-
+  const [returnedBook, setReturnedBook] = useState<IBook | null>(null);
   const [step, setStep] = useState(STEPS.BOOK_QR_CODE_SCANNING);
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleBookConfirmation = (book: IBook | undefined) => {
+    if (!book) return;
+    setReturnedBook(book);
+    console.log("confirmed book", book);
+  };
 
   const closeDrawer = () => {
     setStep(STEPS.BOOK_QR_CODE_SCANNING);
     setIsOpen(false);
     setFoundBook(undefined);
+    setReturnedBook(null);
   };
 
   const handleStepChange = (newStep: number) => {
@@ -44,12 +51,21 @@ const ReturnComponent = ({ facets }: DrawerButtonProps) => {
         );
       case STEPS.BOOK_CONFIRMATION:
         return foundBook ? (
-          <BookConfirmation setStep={handleStepChange} book={foundBook} />
+          <BookConfirmation
+            setStep={handleStepChange}
+            book={foundBook}
+            handleBookConfirmation={handleBookConfirmation}
+          />
         ) : (
           <BookNotFound setStep={handleStepChange} />
         );
       case STEPS.PENDING_RETURN_LISTING:
-        return <PendingReturnBooks setStep={handleStepChange} />;
+        return (
+          <PendingReturnBooks
+            setStep={handleStepChange}
+            handleBookConfirmation={handleBookConfirmation}
+          />
+        );
       case STEPS.SHELF_QR_CODE_SCANNING:
         return <p>SHELF_QR_CODE_SCANNING</p>;
       case STEPS.LOADING:

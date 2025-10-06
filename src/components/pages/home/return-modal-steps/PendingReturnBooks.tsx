@@ -7,17 +7,18 @@ import { useCallback, useEffect, useState } from "react";
 import { IBook } from "@/interfaces/fireStore";
 import { listPendingReturns } from "@/services/rent";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { upperCaseFirstLetter } from "@/helpers/text";
 
 type PendingBook = IBook & { rentId: string };
 
-const upperCaseFirstLetter = (str?: string) => {
-  if (!str) return "";
-  return str
-    .toLocaleLowerCase("pt-BR")
-    .replace(/(^|\s)\S/g, (char) => char.toLocaleUpperCase("pt-BR"));
-};
+interface PendingReturnBooksProps extends ModalStepProps {
+  handleBookConfirmation: (book: IBook | undefined) => void;
+}
 
-const PendingReturnBooks = ({ setStep }: ModalStepProps) => {
+const PendingReturnBooks = ({
+  setStep,
+  handleBookConfirmation,
+}: PendingReturnBooksProps) => {
   const [books, setBooks] = useState<PendingBook[]>([]);
   const [chosenBook, setChosenBook] = useState<PendingBook["rentId"]>(
     books[0]?.rentId || "",
@@ -36,6 +37,8 @@ const PendingReturnBooks = ({ setStep }: ModalStepProps) => {
   }, []);
 
   const confirmBook = useCallback(() => {
+    if (!chosenBook) return;
+    handleBookConfirmation(books.find((book) => book.rentId === chosenBook));
     setStep(STEPS.SHELF_QR_CODE_SCANNING);
   }, []);
 
@@ -151,7 +154,7 @@ const PendingReturnBooks = ({ setStep }: ModalStepProps) => {
       ) : null}
       <Button
         variant="main"
-        label="Selecionar"
+        label="Devolver"
         disabled={!chosenBook}
         onClick={confirmBook}
       />
