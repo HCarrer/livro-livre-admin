@@ -1,33 +1,28 @@
-import { STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/return-modal-steps";
 import Button from "@/design-system/button";
 import { ModalStepProps } from "@/interfaces/drawers";
 
-interface BookNotFoundProps extends ModalStepProps {
-  feedback?: string;
-}
-
-const BookNotFound = ({ setStep, feedback }: BookNotFoundProps) => {
+const BookNotFound = ({ setStep }: ModalStepProps) => {
   return (
     <>
       <p className="text-f3 font-bold text-navy-blue w-full text-center">
         Ops! Não conseguimos encontrar este livro
       </p>
       <p className="text-f5 text-navy-blue text-center font-medium">
-        {feedback ||
-          "Tente escanear o QR Code novamente ou preencha os dados manualmente"}
+        Tente novamente ou selecione o livro manualmente.
       </p>
       <div className="flex flex-col gap-y-2">
         <Button
           variant="main"
           className="w-full"
-          label="Escanear QR Code"
-          onClick={() => setStep(STEPS.QR_CODE_SCANNING)}
+          label="Escanear novamente"
+          onClick={() => setStep(STEPS.BOOK_QR_CODE_SCANNING)}
         />
         <Button
           variant="secondary"
           className="w-full"
-          label="Tentar novamente"
-          onClick={() => setStep(STEPS.MANUAL_FILLING)}
+          label="Selecionar manualmente"
+          onClick={() => setStep(STEPS.PENDING_RETURN_LISTING)}
         />
       </div>
     </>

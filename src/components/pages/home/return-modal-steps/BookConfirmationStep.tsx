@@ -1,55 +1,35 @@
-import { STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/return-modal-steps";
 import Button from "@/design-system/button";
 import Image from "next/image";
 import Rating from "@/components/common/Rating";
 import { ModalStepProps } from "@/interfaces/drawers";
-import { useCallback } from "react";
-import { rentBook } from "@/services/rent";
 import { IBook } from "@/interfaces/fireStore";
 import { upperCaseFirstLetter } from "@/helpers/text";
 
 interface BookConfirmationProps extends ModalStepProps {
   book: IBook;
+  handleBookConfirmation: (book: IBook) => void;
 }
 
-const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
-  const handleRentClick = useCallback(async () => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const coords = position.coords;
-        const { success, status, message } = await rentBook(book, coords);
-        if (success) {
-          setStep(STEPS.SUCCESS);
-        } else {
-          if (status === 409) {
-            setStep(
-              STEPS.ERROR,
-              "Parece que você já alugou esse livro! Devolva-o para poder alugar novamente",
-            );
-          } else {
-            setStep(STEPS.ERROR);
-            console.error(message);
-          }
-        }
-      },
-      (error) => {
-        setStep(
-          STEPS.ERROR,
-          "Não foi possível acessar sua localização. Por favor, permita o acesso à localização para alugar o livro.",
-        );
-        console.error("Geolocation error:", error);
-      },
-    );
-  }, [book]);
+const BookConfirmation = ({
+  setStep,
+  book,
+  handleBookConfirmation,
+}: BookConfirmationProps) => {
+  const handleReturnClick = () => {
+    handleBookConfirmation(book);
+    setStep(STEPS.SHELF_QR_CODE_SCANNING);
+  };
 
   return (
     <>
       <div className="flex flex-col gap-y-1">
         <p className="text-f4 font-bold text-navy-blue w-full text-start">
-          Quase lá!
+          É este o seu livro?
         </p>
         <p className="text-f6 text-navy-blue text-start font-medium">
-          Confirme o livro encontrado
+          Se não for, não se preocupe! Você ainda pode selecionar manualmente
+          qual livro deseja devolver.
         </p>
       </div>
       <div className="flex gap-x-2.5 p-3 bg-soft-blue rounded-md">
@@ -91,9 +71,9 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
         <Button
           variant="outline"
           label="É outro livro"
-          onClick={() => setStep(STEPS.MANUAL_FILLING)}
+          onClick={() => setStep(STEPS.PENDING_RETURN_LISTING)}
         />
-        <Button variant="main" label="Alugar" onClick={handleRentClick} />
+        <Button variant="main" label="Devolver" onClick={handleReturnClick} />
       </div>
     </>
   );

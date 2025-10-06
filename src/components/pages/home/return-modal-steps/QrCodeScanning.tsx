@@ -1,5 +1,5 @@
 import Toast from "@/components/common/Toast";
-import { STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/return-modal-steps";
 import Button from "@/design-system/button";
 import { ManualFillingStepProps } from "@/interfaces/drawers";
 import { getBookById } from "@/services/books";
@@ -18,7 +18,7 @@ const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
       const result = await getBookById(bookDocId);
       onSubmitData?.(result);
       if (result) {
-        setStep(STEPS.CONFIRMATION);
+        setStep(STEPS.BOOK_CONFIRMATION);
       } else {
         setStep(
           STEPS.BOOK_NOT_FOUND,
@@ -32,9 +32,12 @@ const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
+      <p className="text-f3 font-bold text-navy-blue text-center">
+        Escaneie o QR Code do livro que deseja devolver
+      </p>
       {isScanning ? (
         <>
-          <p className="text-f5 font-semibold text-center text-navy-blue">
+          <p className="text-f5 text-center text-navy-blue">
             Posicione o QR Code no centro da câmera
           </p>
           <div className="rounded-lg overflow-hidden">
@@ -47,7 +50,7 @@ const QrCodeScanning = ({ setStep, onSubmitData }: ManualFillingStepProps) => {
         </>
       ) : (
         <>
-          <p className="text-f5 font-semibold text-center text-navy-blue">
+          <p className="text-f5 text-center text-navy-blue">
             Habilite a câmera do seu dispositivo para continuar
           </p>
           <div className="size-[296px] flex justify-center items-center">

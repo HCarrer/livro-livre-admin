@@ -1,5 +1,6 @@
 import { auth, db } from "+/authentication/firebase";
 import { getNearestShelf } from "@/helpers/geoLocation";
+import { IRentHistoryFacets } from "@/interfaces/facets";
 import { IBook, IRent } from "@/interfaces/fireStore";
 import {
   collection,
@@ -9,6 +10,7 @@ import {
   setDoc,
   where,
   serverTimestamp,
+  getDoc,
 } from "firebase/firestore";
 
 export const rentBook = async (
@@ -81,6 +83,109 @@ export const rentBook = async (
       success: false,
       status: 500,
       message: "An unexpected error occurred while renting the book.",
+    };
+  }
+};
+
+export const getRentHistoryFacets = async (): Promise<{
+  success: boolean;
+  status: number;
+  facets: IRentHistoryFacets;
+}> => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email)
+      return {
+        success: false,
+        status: 401,
+        facets: { total: 0, pending: 0, returned: 0, score: 0 },
+      };
+
+    const rentCollection = collection(db, "rents");
+    const rentQuery = query(rentCollection, where("user", "==", user.email));
+    const rentQueryResult = await getDocs(rentQuery);
+    const total = rentQueryResult.size;
+    const pending = rentQueryResult.docs.filter(
+      (doc) => doc.data().status === "pendingReturn",
+    ).length;
+    const returned = total - pending;
+
+    return {
+      success: true,
+      status: 200,
+      facets: {
+        total,
+        pending,
+        returned,
+        score: total > 0 ? (returned / total) * 100 : 0,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching rent history facets:", error);
+    return {
+      success: false,
+      status: 500,
+      facets: { total: 0, pending: 0, returned: 0, score: 0 },
+    };
+  }
+};
+
+export const listPendingReturns = async (): Promise<{
+  success: boolean;
+  status: number;
+  books: (IBook & { rentId: string })[];
+}> => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email)
+      return {
+        success: false,
+        status: 401,
+        books: [],
+      };
+
+    const rentCollection = collection(db, "rents");
+    const rentQuery = query(rentCollection, where("user", "==", user.email));
+    const rentQueryResult = await getDocs(rentQuery);
+    const pendingRentDocs = rentQueryResult.docs.filter(
+      (docSnapshot) => docSnapshot.data().status === "pendingReturn",
+    );
+
+    const pendingBooks: (IBook & { rentId: string })[] = [];
+
+    const bookFetchPromises = pendingRentDocs.map((rentDoc) => {
+      const rentData = rentDoc.data();
+      const bookId = rentData.book;
+      if (!bookId) return Promise.resolve(null);
+      const rentId = rentDoc.id;
+      const bookRef = doc(db, "books", bookId);
+      return getDoc(bookRef).then((bookSnap) => {
+        if (bookSnap.exists()) {
+          const bookData = bookSnap.data() as IBook;
+          return {
+            ...bookData,
+            rentId,
+          };
+        }
+        return null;
+      });
+    });
+    const bookResults = await Promise.all(bookFetchPromises);
+    for (const book of bookResults) {
+      if (book) pendingBooks.push(book);
+    }
+
+    return {
+      success: true,
+      status: 200,
+      books: pendingBooks,
+    };
+  } catch (error) {
+    console.error("Error listing pending returns:", error);
+    return {
+      success: false,
+      status: 500,
+      books: [],
     };
   }
 };
