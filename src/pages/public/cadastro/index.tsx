@@ -16,14 +16,11 @@ import Username from "@/components/forms/pages/cadastro/Username";
 import Password from "@/components/forms/pages/cadastro/Password";
 import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConfirmation";
 import { EMAIL_REGEX } from "@/constants/forms/common";
-import { useState } from "react";
 import Toast from "@/components/common/Toast";
 import { createAccount } from "@/services/authentication";
+import { useToast } from "@/contexts/toast";
 
 const SignUp = () => {
-  const [formError, setFormError] = useState<
-    keyof typeof SIGN_UP_TOAST_DICT | null
-  >(null);
   const methods = useForm<SignUpFormProps>({
     defaultValues: SignUpFormDefaultValues,
     mode: "all",
@@ -36,10 +33,11 @@ const SignUp = () => {
     setError,
   } = methods;
 
+  const { showToast } = useToast();
+
   const router = useRouter();
 
   const onSubmit = async (data: SignUpFormProps) => {
-    setFormError(null);
     const { email, password, passwordConfirmation, username } = data;
     let hasError = false;
 
@@ -71,18 +69,16 @@ const SignUp = () => {
     if (success) {
       return router.push(HOME);
     } else {
-      setFormError(toastId);
+      showToast(
+        SIGN_UP_TOAST_DICT[toastId].content,
+        SIGN_UP_TOAST_DICT[toastId].type,
+        SIGN_UP_TOAST_DICT[toastId].duration,
+      );
     }
   };
 
   return (
     <Skeleton>
-      {formError ? (
-        <Toast
-          content={SIGN_UP_TOAST_DICT[formError].content}
-          type={SIGN_UP_TOAST_DICT[formError].type}
-        />
-      ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image

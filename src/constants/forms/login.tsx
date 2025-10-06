@@ -13,7 +13,11 @@ export const LoginFormDefaultValues = {
 
 export const LOGIN_TOAST_DICT: Record<
   string,
-  { type: ToastProps["type"]; content: ToastProps["content"] }
+  {
+    content: ToastProps["content"];
+    type?: ToastProps["type"];
+    duration?: ToastProps["duration"];
+  }
 > = {
   [ACCESS_DENIED]: {
     type: "error",

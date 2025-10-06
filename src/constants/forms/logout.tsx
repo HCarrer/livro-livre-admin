@@ -2,7 +2,11 @@ import { ToastProps } from "@/components/common/Toast";
 
 export const LOGOUT_TOAST_DICT: Record<
   string,
-  { type: ToastProps["type"]; content: ToastProps["content"] }
+  {
+    type: ToastProps["type"];
+    content: ToastProps["content"];
+    duration?: ToastProps["duration"];
+  }
 > = {
   ["bad-request"]: {
     content: "Erro ao desconectar. Tente novamente",

@@ -24,9 +24,10 @@ import Username from "@/components/forms/pages/login/Username";
 import Password from "@/components/forms/pages/login/Password";
 import router, { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import Toast from "@/components/common/Toast";
-import { useEffect, useState } from "react";
+import { ToastProps } from "@/components/common/Toast";
+import { useEffect } from "react";
 import { login, loginWithGoogle } from "@/services/authentication";
+import { useToast } from "@/contexts/toast";
 
 const GoogleButtonContent = ({
   triggerError,
@@ -58,9 +59,7 @@ const GoogleButtonContent = ({
 };
 
 const Login = () => {
-  const [formError, setFormError] = useState<
-    keyof typeof LOGIN_TOAST_DICT | null
-  >(null);
+  const { showToast } = useToast();
 
   const methods = useForm<LoginFormProps>({
     defaultValues: LoginFormDefaultValues,
@@ -78,29 +77,25 @@ const Login = () => {
   const loggedOut = useSearchParams().get(LOGGED_OUT) === BOOLEAN_QUERY.TRUE;
 
   useEffect(() => {
-    if (accessDenied) setFormError(ACCESS_DENIED);
-    if (loggedOut) setFormError(LOGGED_OUT);
+    let toast: ToastProps | null = null;
+    if (accessDenied) toast = LOGIN_TOAST_DICT[ACCESS_DENIED];
+    if (loggedOut) toast = LOGIN_TOAST_DICT[LOGGED_OUT];
+    if (toast) showToast(toast.content, toast.type, toast.duration);
   }, [accessDenied, loggedOut]);
 
   const onSubmit = async (data: LoginFormProps) => {
-    setFormError(null);
     const { username, password } = data;
     const { success, toastId } = await login(username, password);
     if (success) {
       return router.push(HOME);
     } else {
-      setFormError(toastId as keyof typeof LOGIN_TOAST_DICT);
+      const toast = LOGIN_TOAST_DICT[toastId];
+      showToast(toast.content, toast.type, toast.duration);
     }
   };
 
   return (
     <Skeleton>
-      {formError ? (
-        <Toast
-          content={LOGIN_TOAST_DICT[formError].content || formError}
-          type={LOGIN_TOAST_DICT[formError].type || "error"}
-        />
-      ) : null}
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image
@@ -136,7 +131,7 @@ const Login = () => {
         className="w-full h-0.5 bg-[#D9D9D9] rounded rounded-full"
         id="separator-bar"
       />
-      <GoogleButtonContent triggerError={setFormError} />
+      <GoogleButtonContent triggerError={showToast} />
     </Skeleton>
   );
 };
