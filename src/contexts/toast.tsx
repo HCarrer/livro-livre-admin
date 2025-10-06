@@ -23,18 +23,19 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     duration: ToastProps["duration"];
   } | null>(null);
 
-  console.log("ToastProvider render, current toast:", toast);
-
   const showToast = (
     content: ToastProps["content"],
     type: ToastProps["type"] = "success",
-    duration: ToastProps["duration"] = 3000,
+    duration: ToastProps["duration"] = 5,
   ) => {
-    console.log(`called showToast with content: ${content}`);
     setToast({ content, type, duration });
-    setTimeout(() => {
-      setToast(null);
-    }, duration);
+    // resetta o toast depois de (duration + 1)s por garantir que ele desapareceu
+    setTimeout(
+      () => {
+        setToast(null);
+      },
+      (duration + 1) * 1000,
+    );
   };
 
   return (

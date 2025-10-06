@@ -8,6 +8,7 @@ export const STEPS: Record<string, number> = {
   LOADING: 4,
   CONFIRMATION: 5,
   SUCCESS: 6,
+  ERROR: 7,
 };
 
 export const RENT_MODAL_DEFAULT_VALUES: RentManualFillingProps = {

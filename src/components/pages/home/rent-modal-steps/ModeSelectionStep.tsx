@@ -1,5 +1,6 @@
-import { RentModalStepProps, STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
+import { RentModalStepProps } from "@/interfaces/rentDrawer";
 
 const ModeSelectionStep = ({ setStep }: RentModalStepProps) => {
   return (

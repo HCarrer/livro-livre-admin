@@ -23,12 +23,20 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const coords = position.coords;
       const { success, status, message } = await rentBook(book, coords);
-      // TODO: implementar tratativa de devolucao pendente (401)
+      if (success) {
+        setStep(STEPS.SUCCESS);
+      } else {
+        if (status === 409) {
+          setStep(
+            STEPS.ERROR,
+            "Parece que você já alugou esse livro! Devolva-o para poder alugar novamente",
+          );
+        } else {
+          setStep(STEPS.ERROR);
+          console.error(message);
+        }
+      }
     });
-    // const { success, status } = await rentBook(book);
-    // TODO: implementar tratativa de devolucao pendente (401)
-    // console.log(status);
-    // setStep(STEPS.SUCCESS);
   }, [book]);
 
   return (
