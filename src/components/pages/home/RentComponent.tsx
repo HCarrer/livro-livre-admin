@@ -80,8 +80,10 @@ const RentComponent = () => {
       case STEPS.BOOK_NOT_FOUND:
         return <BookNotFound feedback={feedback} setStep={handleStepChange} />;
       case STEPS.CONFIRMATION:
-        return (
-          <BookConfirmation setStep={handleStepChange} book={foundBook!} />
+        return foundBook ? (
+          <BookConfirmation setStep={handleStepChange} book={foundBook} />
+        ) : (
+          <BookNotFound feedback={feedback} setStep={handleStepChange} />
         );
       case STEPS.SUCCESS:
         return <SuccessStep handleDrawerClose={closeDrawer} />;
