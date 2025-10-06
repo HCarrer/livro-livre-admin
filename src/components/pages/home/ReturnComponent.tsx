@@ -22,7 +22,6 @@ const ReturnComponent = ({ facets }: DrawerButtonProps) => {
   const handleBookConfirmation = (book: IBook | undefined) => {
     if (!book) return;
     setReturnedBook(book);
-    console.log("confirmed book", book);
   };
 
   const closeDrawer = () => {
