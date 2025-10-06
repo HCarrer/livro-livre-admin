@@ -27,9 +27,9 @@ export const rentBook = async (
     const bookDocRef = collection(db, "books");
     const q = query(
       bookDocRef,
-      where("title", "==", title.trim().toLowerCase()),
-      where("author", "==", author.trim().toLowerCase()),
-      where("publisher", "==", publisher.trim().toLowerCase()),
+      where("title", "==", title.toLowerCase()),
+      where("author", "==", author.toLowerCase()),
+      where("publisher", "==", publisher.toLowerCase()),
     );
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty)
@@ -55,7 +55,11 @@ export const rentBook = async (
     );
 
     if (!nearestShelf)
-      return { success: false, status: 404, message: "No shelf found near the provided location" };
+      return {
+        success: false,
+        status: 404,
+        message: "No shelf found near the provided location",
+      };
 
     const rentDocRef = doc(rentCollection);
     const rentData: IRent = {
