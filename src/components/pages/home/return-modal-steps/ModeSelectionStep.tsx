@@ -1,4 +1,4 @@
-import { STEPS } from "@/constants/forms/rent-modal-steps";
+import { STEPS } from "@/constants/forms/return-modal-steps";
 import Button from "@/design-system/button";
 import { ModalStepProps } from "@/interfaces/drawers";
 
