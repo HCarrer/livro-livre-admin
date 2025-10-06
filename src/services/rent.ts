@@ -76,10 +76,11 @@ export const rentBook = async (
 
     return { success: true, status: 200, message: "Book rented successfully" };
   } catch (error) {
+    console.error("Error renting book:", error);
     return {
       success: false,
       status: 500,
-      message: `Error renting book: ${error}`,
+      message: "An unexpected error occurred while renting the book.",
     };
   }
 };
