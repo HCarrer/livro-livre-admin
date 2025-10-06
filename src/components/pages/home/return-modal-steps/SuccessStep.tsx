@@ -9,7 +9,7 @@ const SuccessStep = ({ handleDrawerClose }: SuccessStepProps) => {
   return (
     <>
       <p className="text-f4 font-bold text-navy-blue w-full text-center">
-        Boa leitura!
+        Devolução realizada!
       </p>
       <div className="flex flex-col gap-y-4">
         <p className="text-f5 text-navy-blue text-center font-medium">
