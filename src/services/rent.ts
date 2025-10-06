@@ -113,7 +113,12 @@ export const getRentHistoryFacets = async (): Promise<{
     return {
       success: true,
       status: 200,
-      facets: { total, pending, returned, score: total > 0 ? (returned / total) * 100 : 0 },
+      facets: {
+        total,
+        pending,
+        returned,
+        score: total > 0 ? (returned / total) * 100 : 0,
+      },
     };
   } catch (error) {
     console.error("Error fetching rent history facets:", error);
@@ -146,29 +151,28 @@ export const listPendingReturns = async (): Promise<{
       (docSnapshot) => docSnapshot.data().status === "pendingReturn",
     );
 
-    // 3) For each pending rent, fetch the corresponding book document
     const pendingBooks: (IBook & { rentId: string })[] = [];
 
-    for (const rentDoc of pendingRentDocs) {
+    const bookFetchPromises = pendingRentDocs.map((rentDoc) => {
       const rentData = rentDoc.data();
-
-      // rentData.book contains the ID of the matching book doc
       const bookId = rentData.book;
-      if (!bookId) continue;
-
-      // rentId here is the ID of the rent doc itself
+      if (!bookId) return Promise.resolve(null);
       const rentId = rentDoc.id;
-
       const bookRef = doc(db, "books", bookId);
-      const bookSnap = await getDoc(bookRef);
-
-      if (bookSnap.exists()) {
-        const bookData = bookSnap.data() as IBook;
-        pendingBooks.push({
-          ...bookData,
-          rentId,
-        });
-      }
+      return getDoc(bookRef).then((bookSnap) => {
+        if (bookSnap.exists()) {
+          const bookData = bookSnap.data() as IBook;
+          return {
+            ...bookData,
+            rentId,
+          };
+        }
+        return null;
+      });
+    });
+    const bookResults = await Promise.all(bookFetchPromises);
+    for (const book of bookResults) {
+      if (book) pendingBooks.push(book);
     }
 
     return {
