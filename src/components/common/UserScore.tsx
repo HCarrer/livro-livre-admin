@@ -50,7 +50,7 @@ const UserScore = ({ booksRead = 0, booksToReturn = 0 }: UserScoreProps) => {
               <HelpCircle size={16} />
             </TooltipTrigger>
             <TooltipContent className="text-white font-semibold">
-              <p>Taxa entre livros lidos e devoluções pendentes.</p>
+              <p>Taxa entre livros devolvidos e o total.</p>
             </TooltipContent>
           </Tooltip>
         </p>

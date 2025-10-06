@@ -1,5 +1,6 @@
 import { auth, db } from "+/authentication/firebase";
 import { getNearestShelf } from "@/helpers/geoLocation";
+import { IRentHistoryFacets } from "@/interfaces/facets";
 import { IBook, IRent } from "@/interfaces/fireStore";
 import {
   collection,
@@ -81,6 +82,44 @@ export const rentBook = async (
       success: false,
       status: 500,
       message: "An unexpected error occurred while renting the book.",
+    };
+  }
+};
+
+export const getRentHistoryFacets = async (): Promise<{
+  success: boolean;
+  status: number;
+  facets: IRentHistoryFacets;
+}> => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email)
+      return {
+        success: false,
+        status: 401,
+        facets: { total: 0, pending: 0, returned: 0, score: 0 },
+      };
+
+    const rentCollection = collection(db, "rents");
+    const rentQuery = query(rentCollection, where("user", "==", user.email));
+    const rentQueryResult = await getDocs(rentQuery);
+    const total = rentQueryResult.size;
+    const pending = rentQueryResult.docs.filter(
+      (doc) => doc.data().status === "pendingReturn",
+    ).length;
+    const returned = total - pending;
+
+    return {
+      success: true,
+      status: 200,
+      facets: { total, pending, returned, score: (returned / total) * 100 },
+    };
+  } catch (error) {
+    console.error("Error fetching rent history facets:", error);
+    return {
+      success: false,
+      status: 500,
+      facets: { total: 0, pending: 0, returned: 0, score: 0 },
     };
   }
 };

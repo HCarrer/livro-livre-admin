@@ -1,3 +1,4 @@
+import { IRentHistoryFacets } from "./facets";
 import { IBook } from "./fireStore";
 
 export interface RentModalStepProps {
@@ -12,4 +13,8 @@ export interface RentManualFillingProps {
 
 export interface ManualFillingStepProps extends RentModalStepProps {
   onSubmitData?: (data: IBook | null) => void;
+}
+
+export interface DrawerButtonProps {
+  facets?: IRentHistoryFacets;
 }

@@ -6,7 +6,7 @@ import Button from "@/design-system/button";
 import {
   ManualFillingStepProps,
   RentManualFillingProps,
-} from "@/interfaces/rentDrawer";
+} from "@/interfaces/drawers";
 import { getBookByFields } from "@/services/books";
 import { useFormContext } from "react-hook-form";
 

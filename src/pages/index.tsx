@@ -16,10 +16,19 @@ import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { PROFILE } from "@/constants/routes";
+import { getRentHistoryFacets } from "@/services/rent";
+import { IRentHistoryFacets } from "@/interfaces/facets";
+import { useToast } from "@/contexts/toast";
+import ReturnComponent from "@/components/pages/home/ReturnComponent";
 
 const Home = () => {
   const [userData, setUserData] = useState<IUser | null>(null);
+  const [facets, setFacets] = useState<IRentHistoryFacets | undefined>(
+    undefined,
+  );
   const [loading, setLoading] = useState(true);
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -31,11 +40,27 @@ const Home = () => {
           setUserData(data);
         }
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
+
+  const getHistoryFacets = async () => {
+    const { success, facets } = await getRentHistoryFacets();
+    setFacets(facets);
+    if (!success) {
+      showToast(
+        "Erro ao buscar histórico de empréstimos. Tente novamente em instantes.",
+        "error",
+      );
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!userData) return;
+    getHistoryFacets();
+  }, [userData]);
 
   if (loading)
     return (
@@ -85,16 +110,14 @@ const Home = () => {
           </div>
         </div>
         {!userData?.hasClosedWelcomeBanner ? <WelcomeBanner /> : null}
-        <UserScore booksRead={10} booksToReturn={5} />
+        <UserScore
+          booksRead={facets?.returned || 0}
+          booksToReturn={facets?.pending || 0}
+        />
         <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
-          {/* TODO: deixar botoes funcionais */}
-          <RentComponent />
-          <Button
-            variant="secondary"
-            className="w-full"
-            label={RETURN_BUTTON_LABEL}
-            type="button"
-          />
+          {/* TODO: deixar botoes funcionais aqui */}
+          <RentComponent facets={facets} />
+          <ReturnComponent facets={facets} />
         </div>
         <div className="flex flex-col gap-6">
           {ACCORDIONS.map((item, index) => (

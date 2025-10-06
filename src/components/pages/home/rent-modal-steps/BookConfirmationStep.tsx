@@ -2,7 +2,7 @@ import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
 import Image from "next/image";
 import Rating from "@/components/common/Rating";
-import { RentModalStepProps } from "@/interfaces/rentDrawer";
+import { RentModalStepProps } from "@/interfaces/drawers";
 import { useCallback } from "react";
 import { rentBook } from "@/services/rent";
 import { IBook } from "@/interfaces/fireStore";
@@ -41,10 +41,10 @@ const BookConfirmation = ({ setStep, book }: BookConfirmationProps) => {
       (error) => {
         setStep(
           STEPS.ERROR,
-          "Não foi possível acessar sua localização. Por favor, permita o acesso à localização para alugar o livro."
+          "Não foi possível acessar sua localização. Por favor, permita o acesso à localização para alugar o livro.",
         );
         console.error("Geolocation error:", error);
-      }
+      },
     );
   }, [book]);
 

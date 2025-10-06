@@ -1,6 +1,6 @@
 import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
-import { RentModalStepProps } from "@/interfaces/rentDrawer";
+import { RentModalStepProps } from "@/interfaces/drawers";
 import { CircleX } from "lucide-react";
 
 interface ErrorStepProps extends RentModalStepProps {

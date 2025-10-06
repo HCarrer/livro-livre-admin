@@ -1,7 +1,7 @@
 import Toast from "@/components/common/Toast";
 import { STEPS } from "@/constants/forms/rent-modal-steps";
 import Button from "@/design-system/button";
-import { ManualFillingStepProps } from "@/interfaces/rentDrawer";
+import { ManualFillingStepProps } from "@/interfaces/drawers";
 import { getBookById } from "@/services/books";
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";

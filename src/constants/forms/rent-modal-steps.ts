@@ -1,4 +1,4 @@
-import { RentManualFillingProps } from "@/interfaces/rentDrawer";
+import { RentManualFillingProps } from "@/interfaces/drawers";
 
 export const STEPS: Record<string, number> = {
   MODE_SELECTION: 0,
@@ -16,3 +16,5 @@ export const RENT_MODAL_DEFAULT_VALUES: RentManualFillingProps = {
   authorName: "",
   publisherName: "",
 };
+
+export const MAX_SIMULTANEOUS_RENTS = 3;
