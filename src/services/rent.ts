@@ -177,7 +177,7 @@ export const listPendingReturns = async (): Promise<{
       books: pendingBooks,
     };
   } catch (error) {
-    console.error("Error fetching rent history facets:", error);
+    console.error("Error listing pending returns:", error);
     return {
       success: false,
       status: 500,
