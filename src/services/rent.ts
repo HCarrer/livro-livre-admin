@@ -113,7 +113,7 @@ export const getRentHistoryFacets = async (): Promise<{
     return {
       success: true,
       status: 200,
-      facets: { total, pending, returned, score: (returned / total) * 100 },
+      facets: { total, pending, returned, score: total > 0 ? (returned / total) * 100 : 0 },
     };
   } catch (error) {
     console.error("Error fetching rent history facets:", error);
