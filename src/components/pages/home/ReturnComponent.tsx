@@ -94,7 +94,7 @@ const ReturnComponent = ({ facets }: DrawerButtonProps) => {
 
   return (
     <Drawer
-      onClose={() => setTimeout(() => setStep(STEPS.MODE_SELECTION), 300)}
+      onClose={() => setTimeout(() => setStep(STEPS.BOOK_QR_CODE_SCANNING), 300)}
       open={isOpen}
       onOpenChange={(open) => (open ? setIsOpen(true) : closeDrawer())}
     >
