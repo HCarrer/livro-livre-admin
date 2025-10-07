@@ -1,5 +1,5 @@
-import { RentManualFillingProps } from "@/constants/forms/rent-modal-steps";
 import Input from "@/design-system/input";
+import { RentManualFillingProps } from "@/interfaces/drawers";
 import { useFormContext } from "react-hook-form";
 
 const PublisherName = () => {
