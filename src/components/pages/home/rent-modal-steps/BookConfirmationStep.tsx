@@ -67,9 +67,7 @@ const BookConfirmation = ({
           className="max-h-[140px] w-auto object-cover"
         />
         <div className="flex flex-col gap-y-2">
-          <div>
-            <Rating score={3.5} />
-          </div>
+          <Rating score={3.5} />
           <p className="text-f5 font-semibold text-navy-blue">
             {upperCaseFirstLetter(book?.title)}
           </p>

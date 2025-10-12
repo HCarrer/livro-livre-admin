@@ -1,7 +1,9 @@
 import { auth, db } from "+/authentication/firebase";
 import { getNearestShelf } from "@/helpers/geoLocation";
+import { upperCaseFirstLetter } from "@/helpers/text";
 import { IRentHistoryFacets } from "@/interfaces/facets";
 import { IBook, IBookShelf, IRent } from "@/interfaces/fireStore";
+import { IRentHistory } from "@/interfaces/rent";
 import {
   collection,
   doc,
@@ -11,6 +13,8 @@ import {
   where,
   serverTimestamp,
   getDoc,
+  Timestamp,
+  orderBy,
 } from "firebase/firestore";
 
 export const rentBook = async (
@@ -126,6 +130,90 @@ export const getRentHistoryFacets = async (): Promise<{
       success: false,
       status: 500,
       facets: { total: 0, pending: 0, returned: 0, score: 0 },
+    };
+  }
+};
+
+export const getRentHistory = async (
+  filters: IRentHistory["status"][],
+): Promise<{
+  success: boolean;
+  status: number;
+  history: IRentHistory[];
+}> => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email)
+      return {
+        success: false,
+        status: 401,
+        history: [],
+      };
+
+    const rentCollection = collection(db, "rents");
+    let rentQuery;
+    if (filters.length === 1) {
+      rentQuery = query(
+        rentCollection,
+        where("user", "==", user.email),
+        where("status", "==", filters[0]),
+        orderBy("rentAt", "desc"),
+      );
+    } else {
+      rentQuery = query(
+        rentCollection,
+        where("user", "==", user.email),
+        orderBy("rentAt", "desc"),
+      );
+    }
+    const rentQueryResult = await getDocs(rentQuery);
+    const rents = rentQueryResult.docs;
+
+    const historyPromises = rents.map(async (rentDoc) => {
+      const rentData = rentDoc.data() as IRent;
+      const bookRef = doc(db, "books", rentData.book);
+      const bookSnap = await getDoc(bookRef);
+      const bookData = bookSnap.exists() ? (bookSnap.data() as IBook) : null;
+
+      if (!bookData) return null;
+
+      return {
+        book: bookData,
+        rentAt: (rentData.rentAt as Timestamp)
+          .toDate()
+          .toLocaleDateString("pt-BR"),
+        rentShelf: rentData.rentShelf,
+        returnedAt: rentData.returnedAt
+          ? (rentData.returnedAt as Timestamp)
+              .toDate()
+              .toLocaleDateString("pt-BR")
+          : null,
+        returnShelf: rentData.returnShelf,
+        status: rentData.status,
+      } as IRentHistory;
+    });
+
+    const historyResults = await Promise.all(historyPromises);
+    const history = historyResults.filter(
+      (entry): entry is IRentHistory => entry !== null,
+    );
+
+    const upperCasedHistory = history.map((h) => ({
+      ...h,
+      book: { ...h.book, title: upperCaseFirstLetter(h.book.title) },
+    }));
+
+    return {
+      success: true,
+      status: 200,
+      history: upperCasedHistory,
+    };
+  } catch (error) {
+    console.error("Error fetching rent history:", error);
+    return {
+      success: false,
+      status: 500,
+      history: [],
     };
   }
 };

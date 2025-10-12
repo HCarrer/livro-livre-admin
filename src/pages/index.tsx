@@ -117,7 +117,6 @@ const Home = () => {
           booksToReturn={facets?.pending || 0}
         />
         <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
-          {/* TODO: deixar botoes funcionais aqui */}
           <RentComponent facets={facets} onSuccess={onSuccess} />
           <ReturnComponent facets={facets} onSuccess={onSuccess} />
         </div>
