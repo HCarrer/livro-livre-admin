@@ -4,7 +4,6 @@ import Logo from "#/icons/logo.svg";
 import Link from "next/link";
 import { HOME, LOGIN } from "@/constants/routes";
 import { FormProvider, useForm } from "react-hook-form";
-import Skeleton from "@/components/common/Skeleton";
 import {
   SignUpFormDefaultValues,
   SignUpFormProps,
@@ -77,7 +76,7 @@ const SignUp = () => {
   };
 
   return (
-    <Skeleton>
+    <>
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image
@@ -113,7 +112,7 @@ const SignUp = () => {
           className="w-full"
         />
       </div>
-    </Skeleton>
+    </>
   );
 };
 

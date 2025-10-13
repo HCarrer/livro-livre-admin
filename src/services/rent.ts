@@ -1,7 +1,9 @@
 import { auth, db } from "+/authentication/firebase";
 import { getNearestShelf } from "@/helpers/geoLocation";
+import { upperCaseFirstLetter } from "@/helpers/text";
 import { IRentHistoryFacets } from "@/interfaces/facets";
 import { IBook, IBookShelf, IRent } from "@/interfaces/fireStore";
+import { IRentHistory } from "@/interfaces/rent";
 import {
   collection,
   doc,
@@ -11,6 +13,8 @@ import {
   where,
   serverTimestamp,
   getDoc,
+  Timestamp,
+  orderBy,
 } from "firebase/firestore";
 
 export const rentBook = async (
@@ -127,6 +131,64 @@ export const getRentHistoryFacets = async (): Promise<{
       status: 500,
       facets: { total: 0, pending: 0, returned: 0, score: 0 },
     };
+  }
+};
+
+export const getRentHistory = async (
+  filters: IRentHistory["status"][],
+): Promise<{
+  success: boolean;
+  status: number;
+  history: IRentHistory[];
+}> => {
+  try {
+    const user = auth.currentUser;
+    if (!user?.email) {
+      return { success: false, status: 401, history: [] };
+    }
+
+    const rentQuery = query(
+      collection(db, "rents"),
+      where("user", "==", user.email),
+      where("status", "in", filters),
+      orderBy("rentAt", "desc"),
+    );
+
+    const rentQueryResult = await getDocs(rentQuery);
+
+    const historyResults = await Promise.all(
+      rentQueryResult.docs.map(async (rentDoc) => {
+        const rentData = rentDoc.data() as IRent;
+
+        const bookSnap = await getDoc(doc(db, "books", rentData.book));
+        if (!bookSnap.exists()) return null;
+
+        const bookData = bookSnap.data() as IBook;
+
+        const formatDate = (ts?: Timestamp | null) =>
+          ts ? ts.toDate().toLocaleDateString("pt-BR") : null;
+
+        return {
+          book: { ...bookData, title: upperCaseFirstLetter(bookData.title) },
+          rentAt: formatDate(rentData.rentAt as Timestamp),
+          rentShelf: rentData.rentShelf,
+          returnedAt: formatDate(rentData.returnedAt as Timestamp),
+          returnShelf: rentData.returnShelf,
+          status: rentData.status,
+        } as IRentHistory;
+      }),
+    );
+
+    return {
+      success: true,
+      status: 200,
+      history: historyResults.filter(
+        (entry): entry is IRentHistory => entry !== null,
+      ),
+    };
+  } catch (error) {
+    console.error("Error fetching rent history:", error);
+    return { success: false, status: 500, history: [] };
   }
 };
 
