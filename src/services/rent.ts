@@ -151,21 +151,12 @@ export const getRentHistory = async (
       };
 
     const rentCollection = collection(db, "rents");
-    let rentQuery;
-    if (filters.length) {
-      rentQuery = query(
-        rentCollection,
-        where("user", "==", user.email),
-        where("status", "in", filters),
-        orderBy("rentAt", "desc"),
-      );
-    } else {
-      rentQuery = query(
-        rentCollection,
-        where("user", "==", user.email),
-        orderBy("rentAt", "desc"),
-      );
-    }
+    const rentQuery = query(
+      rentCollection,
+      where("user", "==", user.email),
+      where("status", "in", filters),
+      orderBy("rentAt", "desc"),
+    );
     const rentQueryResult = await getDocs(rentQuery);
     const rents = rentQueryResult.docs;
 

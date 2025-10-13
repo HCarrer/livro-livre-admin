@@ -54,6 +54,7 @@ const HistoryPage = () => {
 
   const handleFilterClick = (status: IRentHistory["status"]) => {
     if (filters.includes(status)) {
+      if (filters.length === 1) return;
       setFilters(filters.filter((s) => s !== status));
     } else {
       setFilters([...filters, status]);
