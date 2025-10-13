@@ -15,7 +15,7 @@ const RentDetails = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-y-2 p-3 bg-soft-blue rounded-md">
+    <div className="w-full flex flex-col gap-y-2 p-3 bg-soft-blue rounded-md">
       <div
         className={`w-full p-2 rounded-md ${
           item.status === "returned"

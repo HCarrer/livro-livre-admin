@@ -92,7 +92,7 @@ const HistoryPage = () => {
           Devoluções pendentes
         </p>
       </div>
-      <div className="flex flex-col gap-y-4">
+      <div className="w-full flex flex-col gap-y-4">
         {history.map((item, index) => (
           <RentDetails
             key={index}
