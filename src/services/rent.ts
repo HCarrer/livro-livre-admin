@@ -143,69 +143,52 @@ export const getRentHistory = async (
 }> => {
   try {
     const user = auth.currentUser;
-    if (!user || !user.email)
-      return {
-        success: false,
-        status: 401,
-        history: [],
-      };
+    if (!user?.email) {
+      return { success: false, status: 401, history: [] };
+    }
 
-    const rentCollection = collection(db, "rents");
     const rentQuery = query(
-      rentCollection,
+      collection(db, "rents"),
       where("user", "==", user.email),
       where("status", "in", filters),
       orderBy("rentAt", "desc"),
     );
+
     const rentQueryResult = await getDocs(rentQuery);
-    const rents = rentQueryResult.docs;
 
-    const historyPromises = rents.map(async (rentDoc) => {
-      const rentData = rentDoc.data() as IRent;
-      const bookRef = doc(db, "books", rentData.book);
-      const bookSnap = await getDoc(bookRef);
-      const bookData = bookSnap.exists() ? (bookSnap.data() as IBook) : null;
+    const historyResults = await Promise.all(
+      rentQueryResult.docs.map(async (rentDoc) => {
+        const rentData = rentDoc.data() as IRent;
 
-      if (!bookData) return null;
+        const bookSnap = await getDoc(doc(db, "books", rentData.book));
+        if (!bookSnap.exists()) return null;
 
-      return {
-        book: bookData,
-        rentAt: (rentData.rentAt as Timestamp)
-          .toDate()
-          .toLocaleDateString("pt-BR"),
-        rentShelf: rentData.rentShelf,
-        returnedAt: rentData.returnedAt
-          ? (rentData.returnedAt as Timestamp)
-              .toDate()
-              .toLocaleDateString("pt-BR")
-          : null,
-        returnShelf: rentData.returnShelf,
-        status: rentData.status,
-      } as IRentHistory;
-    });
+        const bookData = bookSnap.data() as IBook;
 
-    const historyResults = await Promise.all(historyPromises);
-    const history = historyResults.filter(
-      (entry): entry is IRentHistory => entry !== null,
+        const formatDate = (ts?: Timestamp | null) =>
+          ts ? ts.toDate().toLocaleDateString("pt-BR") : null;
+
+        return {
+          book: { ...bookData, title: upperCaseFirstLetter(bookData.title) },
+          rentAt: formatDate(rentData.rentAt as Timestamp),
+          rentShelf: rentData.rentShelf,
+          returnedAt: formatDate(rentData.returnedAt as Timestamp),
+          returnShelf: rentData.returnShelf,
+          status: rentData.status,
+        } as IRentHistory;
+      }),
     );
-
-    const upperCasedHistory = history.map((h) => ({
-      ...h,
-      book: { ...h.book, title: upperCaseFirstLetter(h.book.title) },
-    }));
 
     return {
       success: true,
       status: 200,
-      history: upperCasedHistory,
+      history: historyResults.filter(
+        (entry): entry is IRentHistory => entry !== null,
+      ),
     };
   } catch (error) {
     console.error("Error fetching rent history:", error);
-    return {
-      success: false,
-      status: 500,
-      history: [],
-    };
+    return { success: false, status: 500, history: [] };
   }
 };
 
