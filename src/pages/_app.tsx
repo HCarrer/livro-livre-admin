@@ -25,7 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const [loadingUserData, setLoadingUserData] = useState(true);
 
   const router = useRouter();
-  console.log(router.pathname);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
