@@ -1,19 +1,11 @@
-import NavBar from "@/components/common/NavBar";
-import Skeleton from "@/components/common/Skeleton";
 import { getRentHistory } from "@/services/rent";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "+/authentication/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { IUser } from "@/interfaces/fireStore";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { IRentHistory } from "@/interfaces/rent";
 import { useToast } from "@/contexts/toast";
-import { LoaderIcon } from "lucide-react";
 import RentDetails from "@/components/pages/historico/rentDetails";
 
 const HistoryPage = () => {
-  const [userData, setUserData] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [historyLoading, setHistoryLoading] = useState(true);
   const [history, setHistory] = useState<IRentHistory[]>([]);
   const [filters, setFilters] = useState<IRentHistory["status"][]>([
     "returned",
@@ -22,35 +14,20 @@ const HistoryPage = () => {
 
   const { showToast } = useToast();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDocSnapshot = await getDoc(userDocRef);
-        if (userDocSnapshot.exists()) {
-          const data = userDocSnapshot.data() as IUser;
-          setUserData(data);
-        }
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const getHistory = async (filters: IRentHistory["status"][]) => {
+  const getHistory = useCallback(async (filters: IRentHistory["status"][]) => {
+    setHistoryLoading(true);
     const { success, history } = await getRentHistory(filters);
     if (success) {
       setHistory(history);
     } else {
       showToast("Erro ao carregar histórico de empréstimos", "error");
     }
-  };
+    setHistoryLoading(false);
+  }, []);
 
   useEffect(() => {
-    if (!userData) return;
     getHistory(filters);
-  }, [userData, filters]);
+  }, [filters]);
 
   const handleFilterClick = (status: IRentHistory["status"]) => {
     if (filters.includes(status)) {
@@ -61,17 +38,45 @@ const HistoryPage = () => {
     }
   };
 
-  if (loading)
-    return (
-      <Skeleton position="top">
-        <div className="h-screen w-full flex justify-center items-center">
-          <LoaderIcon className="animate-spin text-navy-blue" size={48} />
+  const memoizedContent = useMemo(() => {
+    if (historyLoading)
+      return (
+        <div className="flex flex-col gap-y-2 w-full h-fit bg-soft-blue rounded-md animate-pulse p-3">
+          <div className="h-10 w-full bg-soft-lilac rounded-md" />
+          <div className="flex gap-x-2.5">
+            <div className="w-40 h-32 bg-soft-lilac rounded-md" />
+            <div className="flex flex-col gap-y-2 w-full">
+              <div className="h-6 w-full rounded-md bg-soft-lilac" />
+              <div className="h-4 w-4/5 rounded-md bg-soft-lilac" />
+              <div className="h-4 w-3/5 rounded-md bg-soft-lilac" />
+              <div className="h-4 w-4/5 rounded-md bg-soft-lilac" />
+            </div>
+          </div>
         </div>
-      </Skeleton>
+      );
+    if (history.length)
+      return (
+        <div className="w-full flex flex-col gap-y-4">
+          {history.map((item, index) => (
+            <RentDetails
+              key={index}
+              item={item}
+              index={history.length - (index + 1)}
+            />
+          ))}
+        </div>
+      );
+    return (
+      <div className="w-full mt-10 h-full flex flex-col justify-center items-center gap-y-2">
+        <p className="text-f4 text-navy-blue font-medium">
+          Nenhum histórico encontrado
+        </p>
+      </div>
     );
+  }, [history, historyLoading]);
 
   return (
-    <Skeleton position="top">
+    <div className="flex flex-col gap-y-4 w-full bg-soft-white drop-shadow-[0px_0px_10px_#00000020] rounded-md p-5">
       <div className="w-full text-navy-blue">
         <p className="text-f2 font-bold mb-2">Histórico</p>
         <p className="text-f6 font-medium">
@@ -92,17 +97,8 @@ const HistoryPage = () => {
           Devoluções pendentes
         </p>
       </div>
-      <div className="w-full flex flex-col gap-y-4">
-        {history.map((item, index) => (
-          <RentDetails
-            key={index}
-            item={item}
-            index={history.length - (index + 1)}
-          />
-        ))}
-      </div>
-      <NavBar />
-    </Skeleton>
+      {memoizedContent}
+    </div>
   );
 };
 

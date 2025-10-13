@@ -66,68 +66,34 @@ const Home = () => {
 
   if (loading)
     return (
-      <Skeleton position="top">
-        <div className="h-screen w-full flex justify-center items-center">
-          <LoaderIcon className="animate-spin text-navy-blue" size={48} />
+      <div className="w-full flex justify-center">
+        <div className="w-full flex flex-col gap-y-6">
+          <div className="w-full h-36 rounded-[20px] bg-soft-lilac animate-pulse" />
+          <div className="w-full h-[150px] rounded-[20px] bg-soft-lilac animate-pulse" />
+          <div className="w-full h-16 rounded-[20px] bg-soft-lilac animate-pulse" />
+          <div className="w-full h-16 rounded-[20px] bg-soft-lilac animate-pulse" />
+          <div className="w-full h-16 rounded-[20px] bg-soft-lilac animate-pulse" />
         </div>
-      </Skeleton>
+      </div>
     );
 
   return (
-    <Skeleton position="top">
-      <div className="w-full flex flex-col gap-y-6">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex flex-col text-navy-blue">
-            <p className="text-f2 font-bold">
-              Oi, {userData?.name?.split(" ")[0]}
-            </p>
-            <p className="text-f6 font-medium">Bem vindo de volta</p>
-          </div>
-          <div className="flex items-center gap-x-2 w-fit rounded-full bg-soft-white p-1 drop-shadow-[0px_0px_10px_#00000020]">
-            {/* TODO: so mostrar se tiver notificacoes */}
-            <div className="relative flex justify-center items-center w-11 aspect-square rounded-full">
-              <div className="absolute top-1.5 right-1.5 w-2 aspect-square rounded-full bg-power-blue animate-ping" />
-              <div className="absolute top-1.5 right-1.5 w-2 aspect-square rounded-full bg-power-blue" />
-              <Bell size={28} strokeWidth={2} className="text-navy-blue" />
-            </div>
-            <Link
-              href={PROFILE}
-              className="flex justify-center items-center w-11 aspect-square rounded-full bg-navy-blue"
-            >
-              {userData?.profilePicture ? (
-                <Image
-                  src={userData.profilePicture}
-                  alt="Foto de perfil"
-                  className="w-full h-full object-cover rounded-full"
-                  width={44}
-                  height={44}
-                  style={{ borderRadius: "9999px", objectFit: "cover" }}
-                />
-              ) : (
-                <p className="text-white font-semibold text-f4 !leading-[20px]">
-                  {userData?.name ? userData.name.charAt(0) : "U"}
-                </p>
-              )}
-            </Link>
-          </div>
-        </div>
-        {!userData?.hasClosedWelcomeBanner ? <WelcomeBanner /> : null}
-        <UserScore
-          booksRead={facets?.returned || 0}
-          booksToReturn={facets?.pending || 0}
-        />
-        <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
-          <RentComponent facets={facets} onSuccess={onSuccess} />
-          <ReturnComponent facets={facets} onSuccess={onSuccess} />
-        </div>
-        <div className="flex flex-col gap-6">
-          {ACCORDIONS.map((item, index) => (
-            <Accordion key={index} title={item.title} content={item.content} />
-          ))}
-        </div>
+    <div className="w-full flex flex-col gap-y-6">
+      {!userData?.hasClosedWelcomeBanner ? <WelcomeBanner /> : null}
+      <UserScore
+        booksRead={facets?.returned || 0}
+        booksToReturn={facets?.pending || 0}
+      />
+      <div className="w-full flex flex-col gap-y-2 p-5 bg-soft-white rounded-[20px] drop-shadow-[0px_0px_10px_#00000020]">
+        <RentComponent facets={facets} onSuccess={onSuccess} />
+        <ReturnComponent facets={facets} onSuccess={onSuccess} />
       </div>
-      <NavBar />
-    </Skeleton>
+      <div className="flex flex-col gap-6">
+        {ACCORDIONS.map((item, index) => (
+          <Accordion key={index} title={item.title} content={item.content} />
+        ))}
+      </div>
+    </div>
   );
 };
 

@@ -27,7 +27,7 @@ const RentDetails = ({
           className="flex justify-between items-center cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <p className="text-f3 mb-1 font-bold">
+          <p className="text-f4 mb-1 font-bold">
             #{index + 1}{" "}
             {item.status === "returned" ? "Devolvido" : "Devolução pendente"}
           </p>
