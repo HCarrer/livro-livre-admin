@@ -39,13 +39,12 @@ const HistoryPage = () => {
   }, []);
 
   const getHistory = async (filters: IRentHistory["status"][]) => {
-    const { success, status, history } = await getRentHistory(filters);
+    const { success, history } = await getRentHistory(filters);
     if (success) {
       setHistory(history);
     } else {
       showToast("Erro ao carregar histórico de empréstimos", "error");
     }
-    console.log(success, status, history);
   };
 
   useEffect(() => {

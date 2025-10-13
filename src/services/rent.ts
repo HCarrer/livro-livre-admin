@@ -152,11 +152,11 @@ export const getRentHistory = async (
 
     const rentCollection = collection(db, "rents");
     let rentQuery;
-    if (filters.length === 1) {
+    if (filters.length) {
       rentQuery = query(
         rentCollection,
         where("user", "==", user.email),
-        where("status", "==", filters[0]),
+        where("status", "in", filters),
         orderBy("rentAt", "desc"),
       );
     } else {
