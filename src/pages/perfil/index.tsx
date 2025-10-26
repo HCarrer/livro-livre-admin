@@ -6,7 +6,7 @@ const ProfilePage = () => {
   return (
     <div className="mt-40">
       <Link href={LOGOUT}>
-        <Button>Sign Out</Button>
+        <Button>Desconectar</Button>
       </Link>
     </div>
   );
