@@ -17,6 +17,7 @@ import PasswordConfirmation from "@/components/forms/pages/cadastro/PasswordConf
 import { EMAIL_REGEX } from "@/constants/forms/common";
 import { createAccount } from "@/services/authentication";
 import { useToast } from "@/contexts/toast";
+import Skeleton from "@/components/common/Skeleton";
 
 const SignUp = () => {
   const methods = useForm<SignUpFormProps>({
@@ -76,7 +77,7 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <Skeleton>
       <div className="flex justify-center gap-x-4 items-center">
         <p className="text-f2 font-bold text-navy-blue flex gap-x-2 items-center">
           <Image
@@ -112,7 +113,7 @@ const SignUp = () => {
           className="w-full"
         />
       </div>
-    </>
+    </Skeleton>
   );
 };
 
