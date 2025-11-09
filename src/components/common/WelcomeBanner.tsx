@@ -12,6 +12,7 @@ const WelcomeBanner = () => {
 
     updateDoc(userDocRef, {
       hasClosedWelcomeBanner: true,
+      updatedAt: new Date(),
     }).then(() => {
       setIsOpen(false);
     });
