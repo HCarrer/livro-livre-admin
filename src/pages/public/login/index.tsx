@@ -25,7 +25,7 @@ import Password from "@/components/forms/pages/login/Password";
 import router, { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { ToastProps } from "@/components/common/Toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { login, loginWithGoogle } from "@/services/authentication";
 import { useToast } from "@/contexts/toast";
 
@@ -34,17 +34,25 @@ const GoogleButtonContent = ({
 }: {
   triggerError: (error: string) => void;
 }) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleClick = async () => {
+    setLoading(true);
     const { success, toastId } = await loginWithGoogle();
+    setLoading(false);
     if (success) {
       return router.push(HOME);
     } else triggerError(toastId);
   };
 
   return (
-    <Button variant="tertiary" className="w-full" onClick={handleClick}>
+    <Button
+      variant="tertiary"
+      className="w-full"
+      onClick={handleClick}
+      loading={loading}
+    >
       <p className="flex gap-x-4 justify-center items-center">
         <Image
           src={GoogleIcon}
